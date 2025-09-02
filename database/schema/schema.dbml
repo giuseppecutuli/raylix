@@ -1,4 +1,3 @@
-// Essential enums
 enum trip_status {
   SCHEDULED
   RUNNING
@@ -33,6 +32,11 @@ enum seat_type {
   AISLE
   MIDDLE
   TABLE
+  COUCHETTE_LOWER
+  COUCHETTE_MIDDLE
+  COUCHETTE_UPPER
+  SLEEPER_SINGLE
+  SLEEPER_DOUBLE
 }
 
 enum seat_orientation {
@@ -41,34 +45,76 @@ enum seat_orientation {
   FACING_TABLE
 }
 
-// Currency enum for international railway systems
-enum currency_code {
-  EUR  // Euro
-  USD  // US Dollar
-  GBP  // British Pound
-  CHF  // Swiss Franc
-  JPY  // Japanese Yen
-  CNY  // Chinese Yuan
-  CAD  // Canadian Dollar
-  AUD  // Australian Dollar
-  SEK  // Swedish Krona
-  NOK  // Norwegian Krone
-  DKK  // Danish Krone
-  PLN  // Polish Zloty
-  CZK  // Czech Koruna
-  HUF  // Hungarian Forint
-  RON  // Romanian Leu
+enum cabin_type {
+  COUCHETTE_4
+  COUCHETTE_6
+  SLEEPER_SINGLE
+  SLEEPER_DOUBLE
 }
 
-// Core entities
+enum currency_code {
+  EUR
+  GBP
+  CHF
+  SEK
+  NOK
+  DKK
+  PLN
+  CZK
+  HUF
+  RON
+  BGN
+  HRK
+  USD
+}
+
+enum payment_method {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  SEPA_DIRECT_DEBIT
+  BANCONTACT
+  IDEAL
+  SOFORT
+  GIROPAY
+  APPLE_PAY
+  GOOGLE_PAY
+}
+
+table countries {
+  id string pk
+  name string
+  iso_code string [unique]
+  created_at datetime
+  updated_at datetime
+}
+
+table railway_operators {
+  id string pk
+  name string
+  country_id string [ref: > countries.id]
+  code string [unique]
+  website string [null]
+  created_at datetime
+  updated_at datetime
+
+  indexes {
+    (country_id)
+  }
+}
+
 table cities {
   id string pk
   name string
-  country string
+  country_id string [ref: > countries.id]
   latitude double
   longitude double
   created_at datetime
   updated_at datetime
+
+  indexes {
+    (country_id)
+  }
 }
 
 table stations {
@@ -82,6 +128,8 @@ table stations {
 
   indexes {
     (city_id)
+    (latitude, longitude)
+    (name)
   }
 }
 
@@ -90,7 +138,7 @@ table users {
   first_name string
   last_name string
   email string [unique]
-  password_hash string
+  password string
   created_at datetime
   updated_at datetime
 }
@@ -100,9 +148,9 @@ table passengers {
   user_id string [ref: > users.id, null]
   first_name string
   last_name string
-  email string
-  phone string
-  document_number string
+  email string [null]
+  phone string [null]
+  document_number string [null]
   created_at datetime
   updated_at datetime
 
@@ -112,7 +160,16 @@ table passengers {
   }
 }
 
-// Rolling stock with complete seat layout info
+table service_types {
+  id string pk
+  name string
+  code string [unique]
+  requires_seat_assignment bool [default: true]
+  allows_standing bool [default: false]
+  created_at datetime
+  updated_at datetime
+}
+
 table wagon_categories {
   id string pk
   name string
@@ -125,33 +182,46 @@ table wagons {
   code string [unique]
   category_id string [ref: > wagon_categories.id]
   total_seats integer
-  // Layout configuration for dynamic generation
   total_rows integer
   seats_per_row integer
-  layout_pattern string       // "AB|CD", "A|BC", "AB|C" etc. (| = aisle)
+  layout_pattern string
   row_numbering_start integer [default: 1]
   created_at datetime
   updated_at datetime
 }
 
-// Complete seat definition with grid positioning
+table cabins {
+  id string pk
+  wagon_id string [ref: > wagons.id]
+  cabin_number string
+  cabin_type cabin_type
+  total_beds integer
+  has_private_bathroom bool [default: false]
+  created_at datetime
+  updated_at datetime
+
+  indexes {
+    (wagon_id, cabin_number) [unique]
+  }
+}
+
 table wagon_seats {
   id string pk
   wagon_id string [ref: > wagons.id]
-  seat_number string       // "1A", "2B", etc.
+  cabin_id string [ref: > cabins.id, null]
+  seat_number string
   seat_type seat_type
   seat_orientation seat_orientation [default: 'FORWARD']
-  // Grid positioning (no x,y coordinates needed)
-  row_number integer       // 1, 2, 3, etc.
-  column_letter string     // "A", "B", "C", "D", etc.
+  row_number integer
+  column_letter string
   is_accessible bool [default: false]
   created_at datetime
   updated_at datetime
 
   indexes {
     (wagon_id, seat_number) [unique]
-    (wagon_id, row_number, column_letter) [unique]
-    (wagon_id)
+    (wagon_id, seat_type)
+    (cabin_id)
   }
 }
 
@@ -159,6 +229,7 @@ table trains {
   id string pk
   code string [unique]
   model string
+  is_ship bool [default: false]
   created_at datetime
   updated_at datetime
 }
@@ -176,7 +247,6 @@ table train_wagons {
   }
 }
 
-// Routes
 table routes {
   id string pk
   name string
@@ -190,9 +260,8 @@ table route_stations {
   route_id string [ref: > routes.id]
   station_id string [ref: > stations.id]
   sequence integer
-  arrival_offset_min integer
-  departure_offset_min integer
-  distance_from_start_km decimal
+  arrival_offset_min integer [null]
+  departure_offset_min integer [null]
   created_at datetime
   updated_at datetime
 
@@ -202,68 +271,75 @@ table route_stations {
   }
 }
 
-// Service planning
-table service_calendars {
-  id string pk
-  name string
-  start_date date
-  end_date date
-  monday bool
-  tuesday bool
-  wednesday bool
-  thursday bool
-  friday bool
-  saturday bool
-  sunday bool
-  created_at datetime
-  updated_at datetime
-}
-
 table train_services {
   id string pk
   train_id string [ref: > trains.id]
   route_id string [ref: > routes.id]
-  calendar_id string [ref: > service_calendars.id]
+  service_type_id string [ref: > service_types.id]
+  operator_id string [ref: > railway_operators.id]
   departure_time time
-  service_name string
+  service_name string [null]
+  operates_days jsonb
+  valid_from date
+  valid_to date
+  cabins_enabled bool [default: false]
   created_at datetime
   updated_at datetime
+
+  indexes {
+    (operator_id)
+    (service_type_id)
+    (route_id, departure_time)
+    (operator_id, service_type_id)
+    (valid_from, valid_to)
+  }
 }
 
-// Daily operations with delay management
+table service_exceptions {
+  id string pk
+  train_service_id string [ref: > train_services.id]
+  exception_date date
+  is_running bool
+  reason string [null]
+  created_at datetime
+  updated_at datetime
+
+  indexes {
+    (train_service_id, exception_date) [unique]
+    (exception_date)
+  }
+}
+
 table trips {
   id string pk
   train_service_id string [ref: > train_services.id]
   service_date date
   planned_departure_time datetime
-  actual_departure_time datetime
-  estimated_arrival_time datetime
+  planned_arrival_time datetime
   status trip_status [default: 'SCHEDULED']
   delay_minutes integer [default: 0]
-  train_id string [ref: > trains.id]
-  route_id string [ref: > routes.id]
   created_at datetime
   updated_at datetime
 
   indexes {
     (train_service_id, service_date) [unique]
-    (service_date, route_id)
     (service_date, status)
     (service_date, delay_minutes)
+    (planned_departure_time)
+    (status, planned_departure_time)
   }
 }
 
-// Station-specific delay tracking
 table trip_station_updates {
   id string pk
   trip_id string [ref: > trips.id]
   route_station_id string [ref: > route_stations.id]
-  planned_arrival datetime
-  planned_departure datetime
-  actual_arrival datetime
-  actual_departure datetime
-  delay_minutes integer
-  platform_change string
+  planned_arrival datetime [null]
+  planned_departure datetime [null]
+  actual_arrival datetime [null]
+  actual_departure datetime [null]
+  delay_minutes integer [null]
+  platform_change string [null]
   updated_at datetime
   created_at datetime
 
@@ -271,10 +347,11 @@ table trip_station_updates {
     (trip_id, route_station_id) [unique]
     (trip_id)
     (updated_at)
+    (trip_id, updated_at)
+    (delay_minutes, updated_at)
   }
 }
 
-// SIMPLIFIED BOOKINGS - just container and pricing
 table bookings {
   id string pk
   booking_reference string [unique]
@@ -283,7 +360,7 @@ table bookings {
   origin_station_id string [ref: > stations.id]
   destination_station_id string [ref: > stations.id]
   departure_date date
-  total_amount decimal
+  total_amount decimal [null]
   currency currency_code [default: 'EUR']
   status booking_status [default: 'PENDING']
   created_at datetime
@@ -295,30 +372,28 @@ table bookings {
     (booking_reference)
     (departure_date)
     (origin_station_id, destination_station_id)
-    (created_at)
-    (currency)
+    (user_id, created_at)
+    (status, created_at)
+    (departure_date, status)
   }
 }
 
-// UNIFIED SEGMENTS - single trips have 1 segment, journeys have multiple
 table booking_segments {
   id string pk
   booking_id string [ref: > bookings.id]
   trip_id string [ref: > trips.id]
-  sequence integer                              // Always starts at 1, even for single trips
+  sequence integer
   origin_station_id string [ref: > stations.id]
   destination_station_id string [ref: > stations.id]
   origin_route_station_id string [ref: > route_stations.id]
   destination_route_station_id string [ref: > route_stations.id]
   planned_departure_time datetime
   planned_arrival_time datetime
-  actual_departure_time datetime [null]
-  actual_arrival_time datetime [null]
-  connection_time_minutes integer [null]       // NULL for single trips and last segment
+  connection_time_minutes integer [null]
   platform_departure string [null]
   platform_arrival string [null]
   distance_km decimal
-  segment_amount decimal                        // Cost of this specific segment
+  segment_amount decimal
   created_at datetime
   updated_at datetime
 
@@ -326,18 +401,24 @@ table booking_segments {
     (booking_id, sequence) [unique]
     (trip_id)
     (booking_id)
+    (planned_departure_time)
   }
 }
 
-// Pricing with currency enum
 table fares {
   id string pk
   route_id string [ref: > routes.id, null]
+  operator_id string [ref: > railway_operators.id, null]
+  origin_country_id string [ref: > countries.id, null]
+  destination_country_id string [ref: > countries.id, null]
   wagon_category_id string [ref: > wagon_categories.id, null]
+  service_type_id string [ref: > service_types.id, null]
   distance_min_km integer
   distance_max_km integer
   base_fare decimal
   fare_per_km decimal
+  is_cross_border bool [default: false]
+  international_supplement decimal [null]
   currency currency_code [default: 'EUR']
   valid_from datetime
   valid_to datetime
@@ -345,18 +426,18 @@ table fares {
   updated_at datetime
 
   indexes {
-    (route_id, wagon_category_id)
+    (route_id, operator_id, wagon_category_id, service_type_id)
+    (operator_id, origin_country_id, destination_country_id)
     (valid_from, valid_to)
-    (currency)
+    (service_type_id)
   }
 }
 
-// Seat reservations (always linked to segment)
 table seat_reservations {
   id string pk
   booking_segment_id string [ref: > booking_segments.id]
   trip_id string [ref: > trips.id]
-  wagon_seat_id string [ref: > wagon_seats.id]
+  wagon_seat_id string [ref: > wagon_seats.id, null]
   passenger_id string [ref: > passengers.id]
   origin_route_station_id string [ref: > route_stations.id]
   destination_route_station_id string [ref: > route_stations.id]
@@ -369,10 +450,10 @@ table seat_reservations {
     (trip_id, wagon_seat_id)
     (passenger_id)
     (expires_at)
+    (trip_id, expires_at)
   }
 }
 
-// Tickets (always linked to segment)
 table tickets {
   id string pk
   ticket_number string [unique]
@@ -399,26 +480,25 @@ table tickets {
     (passenger_id)
     (service_date)
     (ticket_number)
-    (currency)
+    (service_date, trip_id)
+    (passenger_id, service_date)
+    (status, service_date)
   }
 }
 
-// Payments
 table payments {
   id string pk
   booking_id string [ref: > bookings.id]
   amount decimal
   currency currency_code [default: 'EUR']
-  method string
+  payment_method payment_method
   status payment_status [default: 'PENDING']
-  transaction_ref string
-  paid_at datetime
+  transaction_ref string [null]
+  paid_at datetime [null]
   created_at datetime
   updated_at datetime
 
   indexes {
     (booking_id)
-    (status)
-    (currency)
   }
 }

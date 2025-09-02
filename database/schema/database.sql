@@ -31,7 +31,12 @@ CREATE TYPE "seat_type" AS ENUM (
   'WINDOW',
   'AISLE',
   'MIDDLE',
-  'TABLE'
+  'TABLE',
+  'COUCHETTE_LOWER',
+  'COUCHETTE_MIDDLE',
+  'COUCHETTE_UPPER',
+  'SLEEPER_SINGLE',
+  'SLEEPER_DOUBLE'
 );
 
 CREATE TYPE "seat_orientation" AS ENUM (
@@ -40,28 +45,64 @@ CREATE TYPE "seat_orientation" AS ENUM (
   'FACING_TABLE'
 );
 
+CREATE TYPE "cabin_type" AS ENUM (
+  'COUCHETTE_4',
+  'COUCHETTE_6',
+  'SLEEPER_SINGLE',
+  'SLEEPER_DOUBLE'
+);
+
 CREATE TYPE "currency_code" AS ENUM (
   'EUR',
-  'USD',
   'GBP',
   'CHF',
-  'JPY',
-  'CNY',
-  'CAD',
-  'AUD',
   'SEK',
   'NOK',
   'DKK',
   'PLN',
   'CZK',
   'HUF',
-  'RON'
+  'RON',
+  'BGN',
+  'HRK',
+  'USD'
+);
+
+CREATE TYPE "payment_method" AS ENUM (
+  'CREDIT_CARD',
+  'DEBIT_CARD',
+  'PAYPAL',
+  'SEPA_DIRECT_DEBIT',
+  'BANCONTACT',
+  'IDEAL',
+  'SOFORT',
+  'GIROPAY',
+  'APPLE_PAY',
+  'GOOGLE_PAY'
+);
+
+CREATE TABLE "countries" (
+  "id" string PRIMARY KEY,
+  "name" string,
+  "iso_code" string UNIQUE,
+  "created_at" datetime,
+  "updated_at" datetime
+);
+
+CREATE TABLE "railway_operators" (
+  "id" string PRIMARY KEY,
+  "name" string,
+  "country_id" string,
+  "code" string UNIQUE,
+  "website" string,
+  "created_at" datetime,
+  "updated_at" datetime
 );
 
 CREATE TABLE "cities" (
   "id" string PRIMARY KEY,
   "name" string,
-  "country" string,
+  "country_id" string,
   "latitude" double,
   "longitude" double,
   "created_at" datetime,
@@ -83,7 +124,7 @@ CREATE TABLE "users" (
   "first_name" string,
   "last_name" string,
   "email" string UNIQUE,
-  "password_hash" string,
+  "password" string,
   "created_at" datetime,
   "updated_at" datetime
 );
@@ -96,6 +137,16 @@ CREATE TABLE "passengers" (
   "email" string,
   "phone" string,
   "document_number" string,
+  "created_at" datetime,
+  "updated_at" datetime
+);
+
+CREATE TABLE "service_types" (
+  "id" string PRIMARY KEY,
+  "name" string,
+  "code" string UNIQUE,
+  "requires_seat_assignment" bool DEFAULT true,
+  "allows_standing" bool DEFAULT false,
   "created_at" datetime,
   "updated_at" datetime
 );
@@ -120,9 +171,21 @@ CREATE TABLE "wagons" (
   "updated_at" datetime
 );
 
+CREATE TABLE "cabins" (
+  "id" string PRIMARY KEY,
+  "wagon_id" string,
+  "cabin_number" string,
+  "cabin_type" cabin_type,
+  "total_beds" integer,
+  "has_private_bathroom" bool DEFAULT false,
+  "created_at" datetime,
+  "updated_at" datetime
+);
+
 CREATE TABLE "wagon_seats" (
   "id" string PRIMARY KEY,
   "wagon_id" string,
+  "cabin_id" string,
   "seat_number" string,
   "seat_type" seat_type,
   "seat_orientation" seat_orientation DEFAULT 'FORWARD',
@@ -137,6 +200,7 @@ CREATE TABLE "trains" (
   "id" string PRIMARY KEY,
   "code" string UNIQUE,
   "model" string,
+  "is_ship" bool DEFAULT false,
   "created_at" datetime,
   "updated_at" datetime
 );
@@ -165,23 +229,6 @@ CREATE TABLE "route_stations" (
   "sequence" integer,
   "arrival_offset_min" integer,
   "departure_offset_min" integer,
-  "distance_from_start_km" decimal,
-  "created_at" datetime,
-  "updated_at" datetime
-);
-
-CREATE TABLE "service_calendars" (
-  "id" string PRIMARY KEY,
-  "name" string,
-  "start_date" date,
-  "end_date" date,
-  "monday" bool,
-  "tuesday" bool,
-  "wednesday" bool,
-  "thursday" bool,
-  "friday" bool,
-  "saturday" bool,
-  "sunday" bool,
   "created_at" datetime,
   "updated_at" datetime
 );
@@ -190,9 +237,24 @@ CREATE TABLE "train_services" (
   "id" string PRIMARY KEY,
   "train_id" string,
   "route_id" string,
-  "calendar_id" string,
+  "service_type_id" string,
+  "operator_id" string,
   "departure_time" time,
   "service_name" string,
+  "operates_days" jsonb,
+  "valid_from" date,
+  "valid_to" date,
+  "cabins_enabled" bool DEFAULT false,
+  "created_at" datetime,
+  "updated_at" datetime
+);
+
+CREATE TABLE "service_exceptions" (
+  "id" string PRIMARY KEY,
+  "train_service_id" string,
+  "exception_date" date,
+  "is_running" bool,
+  "reason" string,
   "created_at" datetime,
   "updated_at" datetime
 );
@@ -202,12 +264,9 @@ CREATE TABLE "trips" (
   "train_service_id" string,
   "service_date" date,
   "planned_departure_time" datetime,
-  "actual_departure_time" datetime,
-  "estimated_arrival_time" datetime,
+  "planned_arrival_time" datetime,
   "status" trip_status DEFAULT 'SCHEDULED',
   "delay_minutes" integer DEFAULT 0,
-  "train_id" string,
-  "route_id" string,
   "created_at" datetime,
   "updated_at" datetime
 );
@@ -252,8 +311,6 @@ CREATE TABLE "booking_segments" (
   "destination_route_station_id" string,
   "planned_departure_time" datetime,
   "planned_arrival_time" datetime,
-  "actual_departure_time" datetime,
-  "actual_arrival_time" datetime,
   "connection_time_minutes" integer,
   "platform_departure" string,
   "platform_arrival" string,
@@ -266,11 +323,17 @@ CREATE TABLE "booking_segments" (
 CREATE TABLE "fares" (
   "id" string PRIMARY KEY,
   "route_id" string,
+  "operator_id" string,
+  "origin_country_id" string,
+  "destination_country_id" string,
   "wagon_category_id" string,
+  "service_type_id" string,
   "distance_min_km" integer,
   "distance_max_km" integer,
   "base_fare" decimal,
   "fare_per_km" decimal,
+  "is_cross_border" bool DEFAULT false,
+  "international_supplement" decimal,
   "currency" currency_code DEFAULT 'EUR',
   "valid_from" datetime,
   "valid_to" datetime,
@@ -316,7 +379,7 @@ CREATE TABLE "payments" (
   "booking_id" string,
   "amount" decimal,
   "currency" currency_code DEFAULT 'EUR',
-  "method" string,
+  "payment_method" payment_method,
   "status" payment_status DEFAULT 'PENDING',
   "transaction_ref" string,
   "paid_at" datetime,
@@ -324,17 +387,27 @@ CREATE TABLE "payments" (
   "updated_at" datetime
 );
 
+CREATE INDEX ON "railway_operators" ("country_id");
+
+CREATE INDEX ON "cities" ("country_id");
+
 CREATE INDEX ON "stations" ("city_id");
+
+CREATE INDEX ON "stations" ("latitude", "longitude");
+
+CREATE INDEX ON "stations" ("name");
 
 CREATE INDEX ON "passengers" ("user_id");
 
 CREATE INDEX ON "passengers" ("email");
 
+CREATE UNIQUE INDEX ON "cabins" ("wagon_id", "cabin_number");
+
 CREATE UNIQUE INDEX ON "wagon_seats" ("wagon_id", "seat_number");
 
-CREATE UNIQUE INDEX ON "wagon_seats" ("wagon_id", "row_number", "column_letter");
+CREATE INDEX ON "wagon_seats" ("wagon_id", "seat_type");
 
-CREATE INDEX ON "wagon_seats" ("wagon_id");
+CREATE INDEX ON "wagon_seats" ("cabin_id");
 
 CREATE UNIQUE INDEX ON "train_wagons" ("train_id", "position");
 
@@ -342,19 +415,39 @@ CREATE UNIQUE INDEX ON "route_stations" ("route_id", "sequence");
 
 CREATE UNIQUE INDEX ON "route_stations" ("route_id", "station_id");
 
-CREATE UNIQUE INDEX ON "trips" ("train_service_id", "service_date");
+CREATE INDEX ON "train_services" ("operator_id");
 
-CREATE INDEX ON "trips" ("service_date", "route_id");
+CREATE INDEX ON "train_services" ("service_type_id");
+
+CREATE INDEX ON "train_services" ("route_id", "departure_time");
+
+CREATE INDEX ON "train_services" ("operator_id", "service_type_id");
+
+CREATE INDEX ON "train_services" ("valid_from", "valid_to");
+
+CREATE UNIQUE INDEX ON "service_exceptions" ("train_service_id", "exception_date");
+
+CREATE INDEX ON "service_exceptions" ("exception_date");
+
+CREATE UNIQUE INDEX ON "trips" ("train_service_id", "service_date");
 
 CREATE INDEX ON "trips" ("service_date", "status");
 
 CREATE INDEX ON "trips" ("service_date", "delay_minutes");
+
+CREATE INDEX ON "trips" ("planned_departure_time");
+
+CREATE INDEX ON "trips" ("status", "planned_departure_time");
 
 CREATE UNIQUE INDEX ON "trip_station_updates" ("trip_id", "route_station_id");
 
 CREATE INDEX ON "trip_station_updates" ("trip_id");
 
 CREATE INDEX ON "trip_station_updates" ("updated_at");
+
+CREATE INDEX ON "trip_station_updates" ("trip_id", "updated_at");
+
+CREATE INDEX ON "trip_station_updates" ("delay_minutes", "updated_at");
 
 CREATE INDEX ON "bookings" ("user_id");
 
@@ -366,9 +459,11 @@ CREATE INDEX ON "bookings" ("departure_date");
 
 CREATE INDEX ON "bookings" ("origin_station_id", "destination_station_id");
 
-CREATE INDEX ON "bookings" ("created_at");
+CREATE INDEX ON "bookings" ("user_id", "created_at");
 
-CREATE INDEX ON "bookings" ("currency");
+CREATE INDEX ON "bookings" ("status", "created_at");
+
+CREATE INDEX ON "bookings" ("departure_date", "status");
 
 CREATE UNIQUE INDEX ON "booking_segments" ("booking_id", "sequence");
 
@@ -376,11 +471,15 @@ CREATE INDEX ON "booking_segments" ("trip_id");
 
 CREATE INDEX ON "booking_segments" ("booking_id");
 
-CREATE INDEX ON "fares" ("route_id", "wagon_category_id");
+CREATE INDEX ON "booking_segments" ("planned_departure_time");
+
+CREATE INDEX ON "fares" ("route_id", "operator_id", "wagon_category_id", "service_type_id");
+
+CREATE INDEX ON "fares" ("operator_id", "origin_country_id", "destination_country_id");
 
 CREATE INDEX ON "fares" ("valid_from", "valid_to");
 
-CREATE INDEX ON "fares" ("currency");
+CREATE INDEX ON "fares" ("service_type_id");
 
 CREATE UNIQUE INDEX ON "seat_reservations" ("booking_segment_id");
 
@@ -389,6 +488,8 @@ CREATE INDEX ON "seat_reservations" ("trip_id", "wagon_seat_id");
 CREATE INDEX ON "seat_reservations" ("passenger_id");
 
 CREATE INDEX ON "seat_reservations" ("expires_at");
+
+CREATE INDEX ON "seat_reservations" ("trip_id", "expires_at");
 
 CREATE INDEX ON "tickets" ("booking_id");
 
@@ -402,13 +503,17 @@ CREATE INDEX ON "tickets" ("service_date");
 
 CREATE INDEX ON "tickets" ("ticket_number");
 
-CREATE INDEX ON "tickets" ("currency");
+CREATE INDEX ON "tickets" ("service_date", "trip_id");
+
+CREATE INDEX ON "tickets" ("passenger_id", "service_date");
+
+CREATE INDEX ON "tickets" ("status", "service_date");
 
 CREATE INDEX ON "payments" ("booking_id");
 
-CREATE INDEX ON "payments" ("status");
+ALTER TABLE "railway_operators" ADD FOREIGN KEY ("country_id") REFERENCES "countries" ("id");
 
-CREATE INDEX ON "payments" ("currency");
+ALTER TABLE "cities" ADD FOREIGN KEY ("country_id") REFERENCES "countries" ("id");
 
 ALTER TABLE "stations" ADD FOREIGN KEY ("city_id") REFERENCES "cities" ("id");
 
@@ -416,7 +521,11 @@ ALTER TABLE "passengers" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "wagons" ADD FOREIGN KEY ("category_id") REFERENCES "wagon_categories" ("id");
 
+ALTER TABLE "cabins" ADD FOREIGN KEY ("wagon_id") REFERENCES "wagons" ("id");
+
 ALTER TABLE "wagon_seats" ADD FOREIGN KEY ("wagon_id") REFERENCES "wagons" ("id");
+
+ALTER TABLE "wagon_seats" ADD FOREIGN KEY ("cabin_id") REFERENCES "cabins" ("id");
 
 ALTER TABLE "train_wagons" ADD FOREIGN KEY ("train_id") REFERENCES "trains" ("id");
 
@@ -430,13 +539,13 @@ ALTER TABLE "train_services" ADD FOREIGN KEY ("train_id") REFERENCES "trains" ("
 
 ALTER TABLE "train_services" ADD FOREIGN KEY ("route_id") REFERENCES "routes" ("id");
 
-ALTER TABLE "train_services" ADD FOREIGN KEY ("calendar_id") REFERENCES "service_calendars" ("id");
+ALTER TABLE "train_services" ADD FOREIGN KEY ("service_type_id") REFERENCES "service_types" ("id");
+
+ALTER TABLE "train_services" ADD FOREIGN KEY ("operator_id") REFERENCES "railway_operators" ("id");
+
+ALTER TABLE "service_exceptions" ADD FOREIGN KEY ("train_service_id") REFERENCES "train_services" ("id");
 
 ALTER TABLE "trips" ADD FOREIGN KEY ("train_service_id") REFERENCES "train_services" ("id");
-
-ALTER TABLE "trips" ADD FOREIGN KEY ("train_id") REFERENCES "trains" ("id");
-
-ALTER TABLE "trips" ADD FOREIGN KEY ("route_id") REFERENCES "routes" ("id");
 
 ALTER TABLE "trip_station_updates" ADD FOREIGN KEY ("trip_id") REFERENCES "trips" ("id");
 
@@ -464,7 +573,15 @@ ALTER TABLE "booking_segments" ADD FOREIGN KEY ("destination_route_station_id") 
 
 ALTER TABLE "fares" ADD FOREIGN KEY ("route_id") REFERENCES "routes" ("id");
 
+ALTER TABLE "fares" ADD FOREIGN KEY ("operator_id") REFERENCES "railway_operators" ("id");
+
+ALTER TABLE "fares" ADD FOREIGN KEY ("origin_country_id") REFERENCES "countries" ("id");
+
+ALTER TABLE "fares" ADD FOREIGN KEY ("destination_country_id") REFERENCES "countries" ("id");
+
 ALTER TABLE "fares" ADD FOREIGN KEY ("wagon_category_id") REFERENCES "wagon_categories" ("id");
+
+ALTER TABLE "fares" ADD FOREIGN KEY ("service_type_id") REFERENCES "service_types" ("id");
 
 ALTER TABLE "seat_reservations" ADD FOREIGN KEY ("booking_segment_id") REFERENCES "booking_segments" ("id");
 
