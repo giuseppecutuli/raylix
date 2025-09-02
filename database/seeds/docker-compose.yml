@@ -1,0 +1,62 @@
+version: '3.8'
+
+name: raylix
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: raylix_postgres
+    environment:
+      POSTGRES_DB: raylix
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../schema/database.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d raylix"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - raylix_network
+
+  seed_generator:
+    build: .
+    container_name: raylix_seed_generator
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_NAME: raylix
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_PORT: 5432
+    volumes:
+      - ./static_data:/app/static_data:ro
+      - ./generate_seed_data.py:/app/generate_seed_data.py:ro
+    networks:
+      - raylix_network
+    
+  adminer:
+    image: adminer:latest
+    container_name: raylix_adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: pepa-linha-dark
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - raylix_network
+
+volumes:
+  postgres_data:
+
+networks:
+  raylix_network:
+    driver: bridge

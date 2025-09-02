@@ -1,0 +1,121 @@
+[
+  {
+    "name": "Trenitalia",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "code": "TI",
+    "website": "https://www.trenitalia.com",
+    "id": "a1b2c3d4-e5f6-4a8c-9d0e-f1a2b3c4d5e6"
+  },
+  {
+    "name": "Italo",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "code": "NTV",
+    "website": "https://www.italotreno.it",
+    "id": "f7af4725-4cff-4257-a2ab-1c3c996e68d8"
+  },
+  {
+    "name": "Grimaldi Lines",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "code": "GRI",
+    "website": "https://www.grimaldi-lines.com",
+    "id": "1590a816-4b9e-4475-9fef-1169756b8ac8"
+  },
+  {
+    "name": "Moby Lines",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "code": "MOB",
+    "website": "https://www.moby.it",
+    "id": "a5cd59a3-5a9c-43b6-a29f-e6b19f0ca3c2"
+  },
+  {
+    "name": "Tirrenia",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "code": "TIR",
+    "website": "https://www.tirrenia.it",
+    "id": "f4725515-45f9-4318-a561-a3a59657c9f7"
+  },
+  {
+    "name": "SNCF Connect",
+    "country_id": "61391a66-061d-4526-bb32-072116e6ef51",
+    "code": "SNCF",
+    "website": "https://www.sncf-connect.com",
+    "id": "72148bed-ac86-4d0d-ba69-6ebfd443bd45"
+  },
+  {
+    "name": "Ouigo",
+    "country_id": "61391a66-061d-4526-bb32-072116e6ef51",
+    "code": "OUI",
+    "website": "https://www.ouigo.com",
+    "id": "4ee1bdbb-0a84-41c0-91de-e6ffd12d86ad"
+  },
+  {
+    "name": "Corsica Ferries",
+    "country_id": "61391a66-061d-4526-bb32-072116e6ef51",
+    "code": "COR",
+    "website": "https://www.corsica-ferries.com",
+    "id": "e54c20e0-9813-4882-bfd2-8602998721c9"
+  },
+  {
+    "name": "Deutsche Bahn",
+    "country_id": "5668011d-3527-4325-8217-fd6a8a1e4e8f",
+    "code": "DB",
+    "website": "https://www.bahn.de",
+    "id": "42a313b1-3efe-43cd-bebc-8bd0bfb1291a"
+  },
+  {
+    "name": "FlixTrain",
+    "country_id": "5668011d-3527-4325-8217-fd6a8a1e4e8f",
+    "code": "FLX",
+    "website": "https://www.flixtrain.com",
+    "id": "d0e1f2a3-b4c5-4d7f-8a9b-c0d1e2f3a4b5"
+  },
+  {
+    "name": "ÖBB",
+    "country_id": "04684741-34a2-4426-a69f-674bb25161f2",
+    "code": "OBB",
+    "website": "https://www.oebb.at",
+    "id": "e1f2a3b4-c5d6-4e8a-9b0c-d1e2f3a4b5c6"
+  },
+  {
+    "name": "SBB CFF FFS",
+    "country_id": "9d33d2f5-be3b-486d-8dee-9a7c4f75c954",
+    "code": "SBB",
+    "website": "https://www.sbb.ch",
+    "id": "b9361349-b6a3-4162-9790-d686b43b12b4"
+  },
+  {
+    "name": "Renfe",
+    "country_id": "28f4fb52-d414-4397-b5b2-00738d19dcc6",
+    "code": "REN",
+    "website": "https://www.renfe.com",
+    "id": "2f0f334e-6986-49aa-869e-28ac0b0c3187"
+  },
+  {
+    "name": "Baleària",
+    "country_id": "28f4fb52-d414-4397-b5b2-00738d19dcc6",
+    "code": "BAL",
+    "website": "https://www.balearia.com",
+    "id": "a9b711ef-219a-4c8c-a9b5-b572b2473d9b"
+  },
+  {
+    "name": "Superfast Ferries",
+    "country_id": "658052b9-4ba6-4dd2-a855-95b05aa32718",
+    "code": "SUP",
+    "website": "https://www.superfast.com",
+    "id": "7917aa1b-b570-406e-b691-b7b28ec0e10f"
+  },
+  {
+    "name": "Minoan Lines",
+    "country_id": "658052b9-4ba6-4dd2-a855-95b05aa32718",
+    "code": "MIN",
+    "website": "https://www.minoan.gr",
+    "id": "0fee6240-e25f-4e10-a869-c9272ccf286d"
+  },
+  {
+    "name": "Anek Lines",
+    "country_id": "658052b9-4ba6-4dd2-a855-95b05aa32718",
+    "code": "ANE",
+    "website": "https://www.anek.gr",
+    "id": "b6a1bea3-5fb4-4c5d-a1f5-aa3afd136fb3"
+  }
+]

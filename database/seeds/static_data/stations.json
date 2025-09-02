@@ -1,0 +1,163 @@
+[
+  {
+    "id": "6797b5e8-71c6-4aa7-8fe4-20bf54cc91e8",
+    "name": "Roma Termini",
+    "city_id": "5bd37016-0a86-4b04-9693-2723d12b53e7",
+    "latitude": 41.901,
+    "longitude": 12.5021
+  },
+  {
+    "id": "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c",
+    "name": "Milano Centrale",
+    "city_id": "a54f2186-80cd-4f91-be4f-4b1f156eb3b0",
+    "latitude": 45.4862,
+    "longitude": 9.2051
+  },
+  {
+    "id": "991ef3ee-3bc1-4355-87eb-0eae1b59b5db",
+    "name": "Napoli Centrale",
+    "city_id": "5779c96a-0166-449b-8dcd-84649c8e6903",
+    "latitude": 40.8536,
+    "longitude": 14.2727
+  },
+  {
+    "id": "fcd785f6-0d6d-4978-9c3e-48871240ea80",
+    "name": "Firenze Santa Maria Novella",
+    "city_id": "1bc82d0f-0aad-4ded-8512-47120dcabec0",
+    "latitude": 43.7766,
+    "longitude": 11.2487
+  },
+  {
+    "id": "d206672f-c5b3-4cd9-8679-2fbda6d707d4",
+    "name": "Venezia Santa Lucia",
+    "city_id": "92536f8b-9037-4318-98a7-38e53e358ef9",
+    "latitude": 45.4419,
+    "longitude": 12.3199
+  },
+  {
+    "id": "bb1c1aed-a35f-411f-8f98-59160c82c6c4",
+    "name": "Palermo Centrale",
+    "city_id": "639c3238-6b1b-49fd-9bad-14c6686c3959",
+    "latitude": 38.122,
+    "longitude": 13.3656
+  },
+  {
+    "id": "86eebb20-e1a1-4169-8415-2b8a70638b14",
+    "name": "Messina Centrale",
+    "city_id": "c75363b5-753d-4c81-8e29-d084109ba024",
+    "latitude": 38.1921,
+    "longitude": 15.5565
+  },
+  {
+    "id": "79fa6668-e07f-4c5c-a92b-d241242277db",
+    "name": "Villa San Giovanni",
+    "city_id": "beba4ce0-6bfb-446b-90ec-ff60bc53cc0a",
+    "latitude": 38.2166,
+    "longitude": 15.6374
+  },
+  {
+    "id": "3c703e72-7187-4f56-9115-591f3ee8a425",
+    "name": "Porto di Bari",
+    "city_id": "b984ebe4-4c71-4fa5-93af-9fc36e090ec8",
+    "latitude": 41.133,
+    "longitude": 16.8748
+  },
+  {
+    "id": "6241e79a-2651-43c2-b59b-1cd258e8c4bd",
+    "name": "Paris Gare de Lyon",
+    "city_id": "69208614-9e86-4b54-816d-8abfb63cbaa6",
+    "latitude": 48.844,
+    "longitude": 2.3734
+  },
+  {
+    "id": "e92d0551-1b38-417c-92ac-830292a3261e",
+    "name": "Paris Gare du Nord",
+    "city_id": "69208614-9e86-4b54-816d-8abfb63cbaa6",
+    "latitude": 48.8809,
+    "longitude": 2.3553
+  },
+  {
+    "id": "61f6d47f-9ae1-4d90-9d7e-dc944ff4900e",
+    "name": "Nice Ville",
+    "city_id": "cdea4eb9-e326-401b-9628-231b8ab9a202",
+    "latitude": 43.7058,
+    "longitude": 7.2619
+  },
+  {
+    "id": "f17cbe23-6881-4ba7-84aa-92f7b9b72137",
+    "name": "Lyon Part-Dieu",
+    "city_id": "fae37406-e540-4575-8957-5bbeaa12f4a6",
+    "latitude": 45.7606,
+    "longitude": 4.8598
+  },
+  {
+    "id": "7a06f7d4-8b31-4cc0-bde6-b706924f42c0",
+    "name": "Marseille Saint-Charles",
+    "city_id": "572b76c0-1c92-499d-bd85-ba20b48bf532",
+    "latitude": 43.3032,
+    "longitude": 5.3805
+  },
+  {
+    "id": "5b4ea7fa-cf6d-4c92-a1c2-635d21943a80",
+    "name": "Athens Larissa Station",
+    "city_id": "4a697841-e3d3-429b-8cf3-935ee84e2838",
+    "latitude": 37.9929,
+    "longitude": 23.7208
+  },
+  {
+    "id": "ac450262-7d6e-49eb-981e-11f432766e95",
+    "name": "Porto di Patrasso",
+    "city_id": "2a00e905-399f-4f59-a634-79f03745b3f5",
+    "latitude": 38.25,
+    "longitude": 21.74
+  },
+  {
+    "id": "9ea9fb3c-1c03-4173-b24a-bafb16dfa96c",
+    "name": "Thessaloniki New Railway Station",
+    "city_id": "50f4fb8c-2cbe-4cde-baab-f625a3fb6d52",
+    "latitude": 40.6195,
+    "longitude": 22.9444
+  },
+  {
+    "id": "565dd89a-8b08-4b33-838e-eb15a2cfca3d",
+    "name": "Madrid Puerta de Atocha",
+    "city_id": "526a1fa3-8b5f-48c2-be72-a3666114f15c",
+    "latitude": 40.4069,
+    "longitude": -3.6919
+  },
+  {
+    "id": "4eb9d3c7-d09d-4ce4-99a2-360526a07cf2",
+    "name": "Barcelona Sants",
+    "city_id": "cd971aba-2eaa-46c3-bedb-24d81e808c48",
+    "latitude": 41.3794,
+    "longitude": 2.1404
+  },
+  {
+    "id": "7ca8b4be-b9eb-478e-b122-58162518f4ca",
+    "name": "Berlin Hauptbahnhof",
+    "city_id": "b9d73ce5-5529-4328-bf71-ce822f5ced45",
+    "latitude": 52.5251,
+    "longitude": 13.3694
+  },
+  {
+    "id": "daed7f57-dafc-459e-a920-13f0688dc767",
+    "name": "München Hauptbahnhof",
+    "city_id": "0de03214-9883-4fa9-917a-6f34e5cfec83",
+    "latitude": 48.1402,
+    "longitude": 11.5582
+  },
+  {
+    "id": "a51166dd-8914-45d1-8ee2-26e63961762e",
+    "name": "Wien Hauptbahnhof",
+    "city_id": "e4f66737-caae-4569-ad89-08025c37000f",
+    "latitude": 48.1858,
+    "longitude": 16.3781
+  },
+  {
+    "id": "bd44e14e-e0e9-4505-831e-a41d8c16ece4",
+    "name": "Zürich Hauptbahnhof",
+    "city_id": "0c74d540-b141-4e2e-a210-5699ef2e52db",
+    "latitude": 47.3783,
+    "longitude": 8.5402
+  }
+]

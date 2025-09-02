@@ -1,0 +1,230 @@
+[
+  {
+    "id": "5acfa256-8b49-4df0-956b-59b888b99141",
+    "code": "ETR500_001",
+    "model": "ETR 500 Frecciarossa",
+    "is_ship": false,
+    "wagon_configs": [
+      {
+        "category_id": "f47e2c4a-8b5d-4c2a-9e1f-7d8b6c4a5e6f",
+        "seats": 68,
+        "rows": 17,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "2a8f3e5b-1c9d-4f2a-8e7b-3d5f6a7b8c9e",
+        "seats": 52,
+        "rows": 13,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "9c6e4a8f-7b3d-4e5a-9f2c-6a8b5d7e4f9c",
+        "seats": 32,
+        "rows": 8,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "4f7b9e2a-5c8d-4a6f-8e3b-7d9a2c5f8e6b",
+        "seats": 20,
+        "rows": 5,
+        "seats_per_row": 4
+      }
+    ]
+  },
+  {
+    "id": "2bf2b78d-9811-4400-9034-98963d25bad9",
+    "code": "ETR600_001",
+    "model": "ETR 600 Frecciabianca",
+    "is_ship": false,
+    "wagon_configs": [
+      {
+        "category_id": "f47e2c4a-8b5d-4c2a-9e1f-7d8b6c4a5e6f",
+        "seats": 80,
+        "rows": 20,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "2a8f3e5b-1c9d-4f2a-8e7b-3d5f6a7b8c9e",
+        "seats": 60,
+        "rows": 15,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "9c6e4a8f-7b3d-4e5a-9f2c-6a8b5d7e4f9c",
+        "seats": 40,
+        "rows": 10,
+        "seats_per_row": 4
+      }
+    ]
+  },
+  {
+    "id": "5bce778d-cf55-4a72-912c-bb9da2889f28",
+    "code": "AGV575_001",
+    "model": "AGV 575 Italo",
+    "is_ship": false,
+    "wagon_configs": [
+      {
+        "category_id": "f47e2c4a-8b5d-4c2a-9e1f-7d8b6c4a5e6f",
+        "seats": 72,
+        "rows": 18,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "2a8f3e5b-1c9d-4f2a-8e7b-3d5f6a7b8c9e",
+        "seats": 56,
+        "rows": 14,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "9c6e4a8f-7b3d-4e5a-9f2c-6a8b5d7e4f9c",
+        "seats": 36,
+        "rows": 9,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "4f7b9e2a-5c8d-4a6f-8e3b-7d9a2c5f8e6b",
+        "seats": 24,
+        "rows": 6,
+        "seats_per_row": 4
+      }
+    ]
+  },
+  {
+    "id": "a1c21b91-269f-4b03-bd51-e2bfd1564049",
+    "code": "IC_001",
+    "model": "Intercity Standard",
+    "is_ship": false,
+    "wagon_configs": [
+      {
+        "category_id": "f47e2c4a-8b5d-4c2a-9e1f-7d8b6c4a5e6f",
+        "seats": 90,
+        "rows": 18,
+        "seats_per_row": 5
+      },
+      {
+        "category_id": "2a8f3e5b-1c9d-4f2a-8e7b-3d5f6a7b8c9e",
+        "seats": 48,
+        "rows": 12,
+        "seats_per_row": 4
+      }
+    ]
+  },
+  {
+    "id": "29c4a3c1-5c12-44f1-8a97-1d667eb23304",
+    "code": "ICE3_001",
+    "model": "ICE 3 Deutsche Bahn",
+    "is_ship": false,
+    "wagon_configs": [
+      {
+        "category_id": "f47e2c4a-8b5d-4c2a-9e1f-7d8b6c4a5e6f",
+        "seats": 76,
+        "rows": 19,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "2a8f3e5b-1c9d-4f2a-8e7b-3d5f6a7b8c9e",
+        "seats": 44,
+        "rows": 11,
+        "seats_per_row": 4
+      }
+    ]
+  },
+  {
+    "id": "c788669c-e2bd-45b6-adc1-ecec6ac4677f",
+    "code": "TGV_001",
+    "model": "TGV Duplex",
+    "is_ship": false,
+    "wagon_configs": [
+      {
+        "category_id": "f47e2c4a-8b5d-4c2a-9e1f-7d8b6c4a5e6f",
+        "seats": 84,
+        "rows": 21,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "2a8f3e5b-1c9d-4f2a-8e7b-3d5f6a7b8c9e",
+        "seats": 48,
+        "rows": 12,
+        "seats_per_row": 4
+      }
+    ]
+  },
+  {
+    "id": "9086aa5d-324f-4623-aa9e-3f53970a6182",
+    "code": "AVE_001",
+    "model": "AVE S-103",
+    "is_ship": false,
+    "wagon_configs": [
+      {
+        "category_id": "f47e2c4a-8b5d-4c2a-9e1f-7d8b6c4a5e6f",
+        "seats": 88,
+        "rows": 22,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "2a8f3e5b-1c9d-4f2a-8e7b-3d5f6a7b8c9e",
+        "seats": 52,
+        "rows": 13,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "9c6e4a8f-7b3d-4e5a-9f2c-6a8b5d7e4f9c",
+        "seats": 28,
+        "rows": 7,
+        "seats_per_row": 4
+      }
+    ]
+  },
+  {
+    "id": "32ffaa15-579d-4c2a-8888-1ca5598d7f34",
+    "code": "FERRY_001",
+    "model": "Traghetto Passeggeri",
+    "is_ship": true,
+    "wagon_configs": [
+      {
+        "category_id": "8e5c2f9a-3b7d-4c8e-9a6f-5d8c7b4e9f2a",
+        "seats": 200,
+        "rows": 40,
+        "seats_per_row": 5
+      },
+      {
+        "category_id": "1f8e6c4a-9b5d-4e7c-8f2a-6c9e5b8d7f4c",
+        "seats": 80,
+        "rows": 20,
+        "seats_per_row": 4
+      }
+    ]
+  },
+  {
+    "id": "2cb4a49b-dc6f-408f-a6a4-0658394f8b4e",
+    "code": "FERRY_N_001",
+    "model": "Traghetto Notturno",
+    "is_ship": true,
+    "wagon_configs": [
+      {
+        "category_id": "7c4f8e2a-5d9b-4c6f-8e7a-9c5d8f6e4b7c",
+        "seats": 48,
+        "rows": 12,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "3e9c6f4a-7b8d-4e5c-9f6a-8d7c5e9b4f6e",
+        "seats": 24,
+        "rows": 6,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "6a8f4c2e-9d5b-4f7c-8e9a-5c7f8e6b4d9c",
+        "seats": 16,
+        "rows": 4,
+        "seats_per_row": 4
+      },
+      {
+        "category_id": "2c7e9f4a-8b6d-4c5f-9e8a-7d6c9e5b8f4c",
+        "seats": 12,
+        "rows": 3,
+        "seats_per_row": 4
+      }
+    ]
+  }
+]

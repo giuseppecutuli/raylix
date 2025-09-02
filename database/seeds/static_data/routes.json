@@ -1,0 +1,262 @@
+[
+  {
+    "name": "Milano-Roma",
+    "stations": [
+      "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c",
+      "fcd785f6-0d6d-4978-9c3e-48871240ea80",
+      "6797b5e8-71c6-4aa7-8fe4-20bf54cc91e8"
+    ],
+    "services": [
+      "307659d6-ce31-4161-b7fd-2ede17543c48",
+      "49a8387b-07f2-45ee-b951-cb335b67bc7a",
+      "39fc39d3-e934-4dec-81fb-c807e2f18630"
+    ],
+    "is_international": false,
+    "base_time_minutes": 90,
+    "id": "ce3d6cce-937f-4944-978f-55a9a637e5ad"
+  },
+  {
+    "name": "Roma-Napoli",
+    "stations": [
+      "6797b5e8-71c6-4aa7-8fe4-20bf54cc91e8",
+      "991ef3ee-3bc1-4355-87eb-0eae1b59b5db"
+    ],
+    "services": [
+      "5b0dd666-dece-4f5c-85b3-1375d72944f9",
+      "8a476c31-fae4-4576-bc25-90ddbf010355",
+      "83c861a5-20a2-470e-b5a5-a4605da5601a"
+    ],
+    "is_international": false,
+    "base_time_minutes": 60,
+    "id": "5e73a039-4d1c-4399-8494-91877f3495cc"
+  },
+  {
+    "name": "Villa San Giovanni-Messina (Traghetto)",
+    "stations": [
+      "79fa6668-e07f-4c5c-a92b-d241242277db",
+      "86eebb20-e1a1-4169-8415-2b8a70638b14"
+    ],
+    "services": [
+      "5242d2cb-0f13-4041-b05d-b978b402f43f"
+    ],
+    "is_international": false,
+    "base_time_minutes": 30,
+    "id": "d3cd2213-27d9-43c8-a605-57509ca9c6a0"
+  },
+  {
+    "name": "Napoli-Palermo (Traghetto Notturno)",
+    "stations": [
+      "991ef3ee-3bc1-4355-87eb-0eae1b59b5db",
+      "bb1c1aed-a35f-411f-8f98-59160c82c6c4"
+    ],
+    "services": [
+      "5242d2cb-0f13-4041-b05d-b978b402f43f"
+    ],
+    "is_international": false,
+    "base_time_minutes": 480,
+    "id": "80de5c05-517a-4aed-8bd8-9d2362bfe7ca"
+  },
+  {
+    "name": "Paris-Milano (TGV)",
+    "stations": [
+      "86eebb20-e1a1-4169-8415-2b8a70638b14",
+      "3c703e72-7187-4f56-9115-591f3ee8a425",
+      "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c"
+    ],
+    "services": [
+      "29cf92e8-5ed9-4de5-ac51-934e7cf1e324"
+    ],
+    "is_international": true,
+    "base_time_minutes": 180,
+    "id": "74e87e8f-0f99-4070-ae14-64508ce326f9"
+  },
+  {
+    "name": "Nizza-Milano",
+    "stations": [
+      "fcd785f6-0d6d-4978-9c3e-48871240ea80",
+      "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c"
+    ],
+    "services": [
+      "49a8387b-07f2-45ee-b951-cb335b67bc7a"
+    ],
+    "is_international": true,
+    "base_time_minutes": 120,
+    "id": "421e096c-177f-4166-8e9b-d524ce628f5c"
+  },
+  {
+    "name": "Munich-Venezia",
+    "stations": [
+      "e92d0551-1b38-417c-92ac-830292a3261e",
+      "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c",
+      "d206672f-c5b3-4cd9-8679-2fbda6d707d4"
+    ],
+    "services": [
+      "85f8d967-1f37-43e1-9425-ce256754cf76"
+    ],
+    "is_international": true,
+    "base_time_minutes": 240,
+    "id": "1df105d0-5289-410a-a5c7-752a8b068ff3"
+  },
+  {
+    "name": "Berlin-Roma",
+    "stations": [
+      "bb1c1aed-a35f-411f-8f98-59160c82c6c4",
+      "e92d0551-1b38-417c-92ac-830292a3261e",
+      "6797b5e8-71c6-4aa7-8fe4-20bf54cc91e8"
+    ],
+    "services": [
+      "85f8d967-1f37-43e1-9425-ce256754cf76"
+    ],
+    "is_international": true,
+    "base_time_minutes": 300,
+    "id": "da67e319-7ecd-496d-8625-ad9ef37904dc"
+  },
+  {
+    "name": "Zurich-Milano",
+    "stations": [
+      "79fa6668-e07f-4c5c-a92b-d241242277db",
+      "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c"
+    ],
+    "services": [
+      "51cf50b7-b7a9-45a1-b713-6020ece2f37b"
+    ],
+    "is_international": true,
+    "base_time_minutes": 120,
+    "id": "ca099397-99b5-4e89-9af6-87b63e191d20"
+  },
+  {
+    "name": "Patrasso-Bari (Traghetto)",
+    "stations": [
+      "991ef3ee-3bc1-4355-87eb-0eae1b59b5db",
+      "d206672f-c5b3-4cd9-8679-2fbda6d707d4"
+    ],
+    "services": [
+      "5242d2cb-0f13-4041-b05d-b978b402f43f"
+    ],
+    "is_international": true,
+    "base_time_minutes": 600,
+    "id": "a3361b53-505b-4f69-8ee0-cc766e667853"
+  },
+  {
+    "name": "Barcelona-Paris (TGV)",
+    "stations": [
+      "6797b5e8-71c6-4aa7-8fe4-20bf54cc91e8",
+      "86eebb20-e1a1-4169-8415-2b8a70638b14"
+    ],
+    "services": [
+      "29cf92e8-5ed9-4de5-ac51-934e7cf1e324"
+    ],
+    "is_international": true,
+    "base_time_minutes": 420,
+    "id": "d1913f89-2bd2-48f3-99d1-844f1488fbf7"
+  },
+  {
+    "name": "Madrid-Barcelona (AVE)",
+    "stations": [
+      "6241e79a-2651-43c2-b59b-1cd258e8c4bd",
+      "6797b5e8-71c6-4aa7-8fe4-20bf54cc91e8"
+    ],
+    "services": [
+      "23874b91-10ae-4255-bf26-a1c68817b306"
+    ],
+    "is_international": false,
+    "base_time_minutes": 150,
+    "id": "20fd1a53-3c53-4b39-9ab5-f093bf59e935"
+  },
+  {
+    "name": "Vienna-Venezia",
+    "stations": [
+      "79fa6668-e07f-4c5c-a92b-d241242277db",
+      "d206672f-c5b3-4cd9-8679-2fbda6d707d4"
+    ],
+    "services": [
+      "85f8d967-1f37-43e1-9425-ce256754cf76"
+    ],
+    "is_international": true,
+    "base_time_minutes": 240,
+    "id": "e8f4a3b2-9c7d-4e81-b5f3-1a2b3c4d5e6f"
+  },
+  {
+    "name": "Amsterdam-Bruxelles (Thalys)",
+    "stations": [
+      "e92d0551-1b38-417c-92ac-830292a3261e",
+      "3c703e72-7187-4f56-9115-591f3ee8a425"
+    ],
+    "services": [
+      "29cf92e8-5ed9-4de5-ac51-934e7cf1e324"
+    ],
+    "is_international": true,
+    "base_time_minutes": 90,
+    "id": "f9a5b4c3-8d2e-4f71-a6b7-2c3d4e5f6a7b"
+  },
+  {
+    "name": "Frankfurt-Paris (ICE/TGV)",
+    "stations": [
+      "bb1c1aed-a35f-411f-8f98-59160c82c6c4",
+      "86eebb20-e1a1-4169-8415-2b8a70638b14"
+    ],
+    "services": [
+      "85f8d967-1f37-43e1-9425-ce256754cf76",
+      "29cf92e8-5ed9-4de5-ac51-934e7cf1e324"
+    ],
+    "is_international": true,
+    "base_time_minutes": 210,
+    "id": "1a2b3c4d-5e6f-4a7b-8c9d-3e4f5a6b7c8d"
+  },
+  {
+    "name": "Milano-Firenze-Roma (Frecciarossa)",
+    "stations": [
+      "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c",
+      "fcd785f6-0d6d-4978-9c3e-48871240ea80",
+      "6797b5e8-71c6-4aa7-8fe4-20bf54cc91e8"
+    ],
+    "services": [
+      "307659d6-ce31-4161-b7fd-2ede17543c48"
+    ],
+    "is_international": false,
+    "base_time_minutes": 180,
+    "id": "2b3c4d5e-6f7a-4b8c-9d0e-4f5a6b7c8d9e"
+  },
+  {
+    "name": "Torino-Milano-Venezia",
+    "stations": [
+      "86eebb20-e1a1-4169-8415-2b8a70638b14",
+      "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c",
+      "d206672f-c5b3-4cd9-8679-2fbda6d707d4"
+    ],
+    "services": [
+      "49a8387b-07f2-45ee-b951-cb335b67bc7a",
+      "39fc39d3-e934-4dec-81fb-c807e2f18630"
+    ],
+    "is_international": false,
+    "base_time_minutes": 210,
+    "id": "3c4d5e6f-7a8b-4c9d-0e1f-5a6b7c8d9e0f"
+  },
+  {
+    "name": "Geneva-Milano-Roma",
+    "stations": [
+      "79fa6668-e07f-4c5c-a92b-d241242277db",
+      "e4cb671d-12ce-47c7-be03-8f94cb2ffb6c",
+      "6797b5e8-71c6-4aa7-8fe4-20bf54cc91e8"
+    ],
+    "services": [
+      "51cf50b7-b7a9-45a1-b713-6020ece2f37b"
+    ],
+    "is_international": true,
+    "base_time_minutes": 300,
+    "id": "4d5e6f7a-8b9c-4d0e-1f2a-6b7c8d9e0f1a"
+  },
+  {
+    "name": "Lyon-Torino (TGV)",
+    "stations": [
+      "3c703e72-7187-4f56-9115-591f3ee8a425",
+      "86eebb20-e1a1-4169-8415-2b8a70638b14"
+    ],
+    "services": [
+      "29cf92e8-5ed9-4de5-ac51-934e7cf1e324"
+    ],
+    "is_international": true,
+    "base_time_minutes": 150,
+    "id": "5e6f7a8b-9c0d-4e1f-2a3b-7c8d9e0f1a2b"
+  }
+]

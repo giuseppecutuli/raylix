@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Regionale",
+    "code": "REG",
+    "requires_seat_assignment": false,
+    "allows_standing": true,
+    "id": "307659d6-ce31-4161-b7fd-2ede17543c48"
+  },
+  {
+    "name": "Intercity",
+    "code": "IC",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "49a8387b-07f2-45ee-b951-cb335b67bc7a"
+  },
+  {
+    "name": "Frecciarossa",
+    "code": "FR",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "39fc39d3-e934-4dec-81fb-c807e2f18630"
+  },
+  {
+    "name": "Frecciargento",
+    "code": "FA",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "5b0dd666-dece-4f5c-85b3-1375d72944f9"
+  },
+  {
+    "name": "Frecciabianca",
+    "code": "FB",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "8a476c31-fae4-4576-bc25-90ddbf010355"
+  },
+  {
+    "name": "Italo",
+    "code": "NTV",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "83c861a5-20a2-470e-b5a5-a4605da5601a"
+  },
+  {
+    "name": "Regionale Veloce",
+    "code": "RV",
+    "requires_seat_assignment": false,
+    "allows_standing": true,
+    "id": "ff7f6431-3c09-467a-96c0-30f843b8f92f"
+  },
+  {
+    "name": "Intercity Notte",
+    "code": "ICN",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "24ad38b8-1247-40d3-a8f8-ee06f379ff2d"
+  },
+  {
+    "name": "Eurocity",
+    "code": "EC",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "51cf50b7-b7a9-45a1-b713-6020ece2f37b"
+  },
+  {
+    "name": "TGV",
+    "code": "TGV",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "29cf92e8-5ed9-4de5-ac51-934e7cf1e324"
+  },
+  {
+    "name": "AVE",
+    "code": "AVE",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "85f8d967-1f37-43e1-9425-ce256754cf76"
+  },
+  {
+    "name": "ICE",
+    "code": "ICE",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "23874b91-10ae-4255-bf26-a1c68817b306"
+  },
+  {
+    "name": "Traghetto",
+    "code": "SHIP",
+    "requires_seat_assignment": true,
+    "allows_standing": false,
+    "id": "5242d2cb-0f13-4041-b05d-b978b402f43f"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "name": "Italia",
+    "iso_code": "IT"
+  },
+  {
+    "id": "61391a66-061d-4526-bb32-072116e6ef51",
+    "name": "Francia",
+    "iso_code": "FR"
+  },
+  {
+    "id": "658052b9-4ba6-4dd2-a855-95b05aa32718",
+    "name": "Grecia",
+    "iso_code": "GR"
+  },
+  {
+    "id": "28f4fb52-d414-4397-b5b2-00738d19dcc6",
+    "name": "Spagna",
+    "iso_code": "ES"
+  },
+  {
+    "id": "5668011d-3527-4325-8217-fd6a8a1e4e8f",
+    "name": "Germania",
+    "iso_code": "DE"
+  },
+  {
+    "id": "04684741-34a2-4426-a69f-674bb25161f2",
+    "name": "Austria",
+    "iso_code": "AT"
+  },
+  {
+    "id": "9d33d2f5-be3b-486d-8dee-9a7c4f75c954",
+    "name": "Svizzera",
+    "iso_code": "CH"
+  }
+]

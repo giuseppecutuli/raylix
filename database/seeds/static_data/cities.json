@@ -1,0 +1,156 @@
+[
+  {
+    "id": "5bd37016-0a86-4b04-9693-2723d12b53e7",
+    "name": "Roma",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 41.9028,
+    "longitude": 12.4964
+  },
+  {
+    "id": "a54f2186-80cd-4f91-be4f-4b1f156eb3b0",
+    "name": "Milano",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 45.4642,
+    "longitude": 9.19
+  },
+  {
+    "id": "5779c96a-0166-449b-8dcd-84649c8e6903",
+    "name": "Napoli",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 40.8518,
+    "longitude": 14.2681
+  },
+  {
+    "id": "1bc82d0f-0aad-4ded-8512-47120dcabec0",
+    "name": "Firenze",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 43.7696,
+    "longitude": 11.2558
+  },
+  {
+    "id": "92536f8b-9037-4318-98a7-38e53e358ef9",
+    "name": "Venezia",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 45.4408,
+    "longitude": 12.3155
+  },
+  {
+    "id": "639c3238-6b1b-49fd-9bad-14c6686c3959",
+    "name": "Palermo",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 38.1157,
+    "longitude": 13.3613
+  },
+  {
+    "id": "c75363b5-753d-4c81-8e29-d084109ba024",
+    "name": "Messina",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 38.1938,
+    "longitude": 15.554
+  },
+  {
+    "id": "beba4ce0-6bfb-446b-90ec-ff60bc53cc0a",
+    "name": "Reggio Calabria",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 38.111,
+    "longitude": 15.6619
+  },
+  {
+    "id": "b984ebe4-4c71-4fa5-93af-9fc36e090ec8",
+    "name": "Bari",
+    "country_id": "292b2386-581d-475a-a244-fb0220dcd13a",
+    "latitude": 41.1171,
+    "longitude": 16.8719
+  },
+  {
+    "id": "69208614-9e86-4b54-816d-8abfb63cbaa6",
+    "name": "Parigi",
+    "country_id": "61391a66-061d-4526-bb32-072116e6ef51",
+    "latitude": 48.8566,
+    "longitude": 2.3522
+  },
+  {
+    "id": "cdea4eb9-e326-401b-9628-231b8ab9a202",
+    "name": "Nizza",
+    "country_id": "61391a66-061d-4526-bb32-072116e6ef51",
+    "latitude": 43.7102,
+    "longitude": 7.262
+  },
+  {
+    "id": "fae37406-e540-4575-8957-5bbeaa12f4a6",
+    "name": "Lione",
+    "country_id": "61391a66-061d-4526-bb32-072116e6ef51",
+    "latitude": 45.764,
+    "longitude": 4.8357
+  },
+  {
+    "id": "572b76c0-1c92-499d-bd85-ba20b48bf532",
+    "name": "Marsiglia",
+    "country_id": "61391a66-061d-4526-bb32-072116e6ef51",
+    "latitude": 43.2965,
+    "longitude": 5.3698
+  },
+  {
+    "id": "4a697841-e3d3-429b-8cf3-935ee84e2838",
+    "name": "Atene",
+    "country_id": "658052b9-4ba6-4dd2-a855-95b05aa32718",
+    "latitude": 37.9838,
+    "longitude": 23.7275
+  },
+  {
+    "id": "2a00e905-399f-4f59-a634-79f03745b3f5",
+    "name": "Patrasso",
+    "country_id": "658052b9-4ba6-4dd2-a855-95b05aa32718",
+    "latitude": 38.2466,
+    "longitude": 21.7346
+  },
+  {
+    "id": "50f4fb8c-2cbe-4cde-baab-f625a3fb6d52",
+    "name": "Salonicco",
+    "country_id": "658052b9-4ba6-4dd2-a855-95b05aa32718",
+    "latitude": 40.6401,
+    "longitude": 22.9444
+  },
+  {
+    "id": "526a1fa3-8b5f-48c2-be72-a3666114f15c",
+    "name": "Madrid",
+    "country_id": "28f4fb52-d414-4397-b5b2-00738d19dcc6",
+    "latitude": 40.4168,
+    "longitude": -3.7038
+  },
+  {
+    "id": "cd971aba-2eaa-46c3-bedb-24d81e808c48",
+    "name": "Barcellona",
+    "country_id": "28f4fb52-d414-4397-b5b2-00738d19dcc6",
+    "latitude": 41.3851,
+    "longitude": 2.1734
+  },
+  {
+    "id": "b9d73ce5-5529-4328-bf71-ce822f5ced45",
+    "name": "Berlino",
+    "country_id": "5668011d-3527-4325-8217-fd6a8a1e4e8f",
+    "latitude": 52.52,
+    "longitude": 13.405
+  },
+  {
+    "id": "0de03214-9883-4fa9-917a-6f34e5cfec83",
+    "name": "Monaco di Baviera",
+    "country_id": "5668011d-3527-4325-8217-fd6a8a1e4e8f",
+    "latitude": 48.1351,
+    "longitude": 11.582
+  },
+  {
+    "id": "e4f66737-caae-4569-ad89-08025c37000f",
+    "name": "Vienna",
+    "country_id": "04684741-34a2-4426-a69f-674bb25161f2",
+    "latitude": 48.2082,
+    "longitude": 16.3738
+  },
+  {
+    "id": "0c74d540-b141-4e2e-a210-5699ef2e52db",
+    "name": "Zurigo",
+    "country_id": "9d33d2f5-be3b-486d-8dee-9a7c4f75c954",
+    "latitude": 47.3769,
+    "longitude": 8.5417
+  }
+]

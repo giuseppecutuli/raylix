@@ -1,0 +1,42 @@
+[
+  {
+    "id": "f47e2c4a-8b5d-4c2a-9e1f-7d8b6c4a5e6f",
+    "name": "Seconda Classe"
+  },
+  {
+    "id": "2a8f3e5b-1c9d-4f2a-8e7b-3d5f6a7b8c9e",
+    "name": "Prima Classe"
+  },
+  {
+    "id": "9c6e4a8f-7b3d-4e5a-9f2c-6a8b5d7e4f9c",
+    "name": "Business"
+  },
+  {
+    "id": "4f7b9e2a-5c8d-4a6f-8e3b-7d9a2c5f8e6b",
+    "name": "Executive"
+  },
+  {
+    "id": "8e5c2f9a-3b7d-4c8e-9a6f-5d8c7b4e9f2a",
+    "name": "Cuccette 4 posti"
+  },
+  {
+    "id": "1f8e6c4a-9b5d-4e7c-8f2a-6c9e5b8d7f4c",
+    "name": "Cuccette 6 posti"
+  },
+  {
+    "id": "7c4f8e2a-5d9b-4c6f-8e7a-9c5d8f6e4b7c",
+    "name": "Cabina Singola"
+  },
+  {
+    "id": "3e9c6f4a-7b8d-4e5c-9f6a-8d7c5e9b4f6e",
+    "name": "Cabina Doppia"
+  },
+  {
+    "id": "6a8f4c2e-9d5b-4f7c-8e9a-5c7f8e6b4d9c",
+    "name": "Ponte Auto"
+  },
+  {
+    "id": "2c7e9f4a-8b6d-4c5f-9e8a-7d6c9e5b8f4c",
+    "name": "Poltrona Traghetto"
+  }
+]
