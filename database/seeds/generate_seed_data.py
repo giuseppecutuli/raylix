@@ -22,9 +22,9 @@ class DatabaseManager:
         try:
             self.conn = psycopg2.connect(**self.db_config)
             self.conn.autocommit = True
-            print("✅ Connesso al database PostgreSQL")
+            print("✅ Connected to PostgreSQL database")
         except Exception as e:
-            print(f"❌ Errore connessione database: {e}")
+            print(f"❌ Database connection failed: {e}")
             raise
             
     def get_cursor(self):
@@ -54,9 +54,9 @@ class StaticDataLoader:
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
                     data[entity] = json.load(f)
-                print(f"✅ Caricato {entity}.json")
+                print(f"✓ Loaded {entity}.json")
             except FileNotFoundError:
-                print(f"⚠️ File {file_path} non trovato")
+                print(f"⚠️ File {file_path} not found")
                 data[entity] = []
                 
         return data
@@ -174,7 +174,7 @@ class StaticDataInserter:
         self._insert_wagon_categories()
     
     def _insert_countries(self):
-        print("📍 Inserimento countries...")
+        print("📍 Inserting countries...")
         query = """
             INSERT INTO countries (id, name, iso_code, created_at, updated_at)
             VALUES (%s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING
@@ -186,7 +186,7 @@ class StaticDataInserter:
             ))
     
     def _insert_cities(self):
-        print("🏙️ Inserimento cities...")
+        print("🏙️ Inserting cities...")
         query = """
             INSERT INTO cities (id, name, country_id, latitude, longitude, created_at, updated_at)
             VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING
@@ -198,7 +198,7 @@ class StaticDataInserter:
             ))
     
     def _insert_stations(self):
-        print("🚉 Inserimento stations...")
+        print("🚉 Inserting stations...")
         query = """
             INSERT INTO stations (id, name, city_id, latitude, longitude, platforms, created_at, updated_at)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING
@@ -212,7 +212,7 @@ class StaticDataInserter:
             ))
     
     def _insert_operators(self):
-        print("🚂 Inserimento operators...")
+        print("🚂 Inserting railway operators...")
         query = """
             INSERT INTO railway_operators (id, name, country_id, code, website, created_at, updated_at)
             VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (code) DO NOTHING
@@ -224,7 +224,7 @@ class StaticDataInserter:
             ))
     
     def _insert_service_types(self):
-        print("🎫 Inserimento service types...")
+        print("🎫 Inserting service types...")
         query = """
             INSERT INTO service_types (id, name, code, requires_seat_assignment, allows_standing, created_at, updated_at)
             VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (code) DO NOTHING
@@ -237,7 +237,7 @@ class StaticDataInserter:
             ))
     
     def _insert_wagon_categories(self):
-        print("🚃 Inserimento wagon categories...")
+        print("🚃 Inserting wagon categories...")
         query = """
             INSERT INTO wagon_categories (id, name, created_at, updated_at)
             VALUES (%s, %s, %s, %s) ON CONFLICT DO NOTHING
@@ -254,7 +254,7 @@ class TrainGenerator:
     
     def generate_all(self):
         """Genera treni completi con vagoni e posti"""
-        print("🚄 Generazione treni, vagoni e posti...")
+        print("🚄 Creating trains with wagons and seats...")
         
         for train_config in self.data['train_configs']:
             self._create_train(train_config)
@@ -330,7 +330,7 @@ class RouteGenerator:
     
     def generate_all(self):
         """Genera rotte complete con servizi"""
-        print("🛤️ Generazione rotte e servizi...")
+        print("🛤️ Creating routes and services...")
         
         for route_data in self.data['routes']:
             self._create_route(route_data)
@@ -508,18 +508,18 @@ class BookingGenerator:
     
     def generate_users_and_bookings(self, num_users=500, num_bookings=1500):
         """Genera utenti, prenotazioni, ticket e pagamenti"""
-        print(f"👥 Generazione {num_users} utenti e {num_bookings} prenotazioni...")
+        print(f"👥 Creating {num_users} users and {num_bookings} bookings...")
         
         user_ids = self._create_users(num_users)
         booking_ids = self._create_bookings(user_ids, num_bookings)
         
-        print("🎫 Generazione ticket...")
+        print("🎫 Creating tickets...")
         self._create_tickets(booking_ids)
         
-        print("💳 Generazione pagamenti...")
+        print("💳 Creating payments...")
         self._create_payments(booking_ids)
         
-        print("🪑 Generazione prenotazioni posti...")
+        print("🪑 Creating seat reservations...")
         self._create_seat_reservations(booking_ids)
     
     def _create_users(self, num_users):
@@ -573,7 +573,7 @@ class BookingGenerator:
                 booking_ids.append(booking_id)
             
             if (i + 1) % 100 == 0:
-                print(f"   📋 {i + 1}/{num_bookings} prenotazioni...")
+                print(f"   📋 {i + 1}/{num_bookings} bookings processed...")
         
         return booking_ids
     
@@ -817,7 +817,7 @@ class DatabaseCleaner:
     
     def clear_all_data(self):
         """Cancella tutti i dati"""
-        print("🗑️ Cancellazione dati esistenti...")
+        print("🗑️ Clearing existing data...")
         
         tables = [
             'payments', 'tickets', 'seat_reservations', 'fares', 
@@ -834,7 +834,7 @@ class DatabaseCleaner:
                 self.cursor.execute(f"TRUNCATE TABLE {table} CASCADE")
                 print(f"   🗑️ {table}")
             except Exception as e:
-                print(f"   ⚠️ Errore {table}: {e}")
+                print(f"   ⚠️ Error with {table}: {e}")
 
 class RaylixDataGenerator:
     """Generatore principale per il database Raylix"""
@@ -845,7 +845,7 @@ class RaylixDataGenerator:
     
     def run_full_generation(self, clear_data=True):
         """Esegue la generazione completa"""
-        print("🚄 Avvio generazione dati Raylix...")
+        print("🚄 Starting Raylix data generation...")
         
         try:
             self.db_manager.connect()
@@ -873,17 +873,17 @@ class RaylixDataGenerator:
             # Eccezioni servizio
             self._generate_service_exceptions(cursor)
             
-            print("✅ Generazione completata!")
+            print("✅ Data generation completed successfully!")
             
         except Exception as e:
-            print(f"❌ Errore durante la generazione: {e}")
+            print(f"❌ Error during data generation: {e}")
             raise
         finally:
             self.db_manager.close()
     
     def _insert_fares(self, cursor):
         """Inserisce tariffe dai dati JSON"""
-        print("💰 Inserimento fares...")
+        print("💰 Inserting fare rules...")
         
         for fare_data in self.static_data['fares']:
             cursor.execute("""
@@ -906,7 +906,7 @@ class RaylixDataGenerator:
     
     def _generate_trip_updates(self, cursor):
         """Genera aggiornamenti stazioni viaggi"""
-        print("📊 Generazione trip station updates...")
+        print("📊 Creating trip station updates...")
         
         cursor.execute("""
             SELECT t.id, t.service_date, t.planned_departure_time, 
@@ -957,7 +957,7 @@ class RaylixDataGenerator:
     
     def _generate_service_exceptions(self, cursor):
         """Genera eccezioni del servizio"""
-        print("⚠️ Inserimento service exceptions...")
+        print("⚠️ Creating service exceptions...")
         
         cursor.execute("SELECT id FROM train_services ORDER BY RANDOM() LIMIT 10")
         service_ids = [row[0] for row in cursor.fetchall()]
