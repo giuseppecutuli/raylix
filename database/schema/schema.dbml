@@ -123,6 +123,7 @@ table stations {
   city_id string [ref: > cities.id]
   latitude double
   longitude double
+  platforms jsonb [null]
   created_at datetime
   updated_at datetime
 
@@ -130,6 +131,7 @@ table stations {
     (city_id)
     (latitude, longitude)
     (name)
+    platforms [type: gin]
   }
 }
 
@@ -262,12 +264,14 @@ table route_stations {
   sequence integer
   arrival_offset_min integer [null]
   departure_offset_min integer [null]
+  platform string [null]
   created_at datetime
   updated_at datetime
 
   indexes {
     (route_id, sequence) [unique]
     (route_id, station_id) [unique]
+    (station_id, platform)
   }
 }
 
@@ -339,7 +343,6 @@ table trip_station_updates {
   actual_arrival datetime [null]
   actual_departure datetime [null]
   delay_minutes integer [null]
-  platform_change string [null]
   updated_at datetime
   created_at datetime
 

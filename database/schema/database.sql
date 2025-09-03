@@ -63,12 +63,14 @@ CREATE TABLE stations (
   city_id UUID REFERENCES cities(id),
   latitude DOUBLE PRECISION,
   longitude DOUBLE PRECISION,
+  platforms JSONB,
   created_at TIMESTAMPTZ NOT NULL,
   updated_at TIMESTAMPTZ NOT NULL
 );
 CREATE INDEX idx_stations_city_id ON stations(city_id);
 CREATE INDEX idx_stations_latlong ON stations(latitude, longitude);
 CREATE INDEX idx_stations_name ON stations(name);
+CREATE INDEX idx_stations_platforms ON stations USING gin(platforms);
 
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -191,11 +193,13 @@ CREATE TABLE route_stations (
   sequence INTEGER NOT NULL,
   arrival_offset_min INTEGER,
   departure_offset_min INTEGER,
+  platform TEXT,
   created_at TIMESTAMPTZ NOT NULL,
   updated_at TIMESTAMPTZ NOT NULL,
   UNIQUE(route_id, sequence),
   UNIQUE(route_id, station_id)
 );
+CREATE INDEX idx_route_stations_station_platform ON route_stations(station_id, platform);
 
 -- =========================
 -- SERVICES & TRIPS
@@ -260,7 +264,6 @@ CREATE TABLE trip_station_updates (
   actual_arrival TIMESTAMPTZ,
   actual_departure TIMESTAMPTZ,
   delay_minutes INTEGER,
-  platform_change TEXT,
   updated_at TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ NOT NULL,
   UNIQUE(trip_id, route_station_id)

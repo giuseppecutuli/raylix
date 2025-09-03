@@ -47,6 +47,7 @@
 | `city_id` | string | Riferimento alla città di appartenenza | INDEX |
 | `latitude` | double | Posizione GPS specifica della stazione | INDEX (con longitude) |
 | `longitude` | double | Posizione GPS specifica della stazione | INDEX (con latitude) |
+| `platforms` | jsonb | Lista binari disponibili (nullable) | INDEX (GIN) |
 | `created_at` | datetime | Timestamp di creazione record | - |
 | `updated_at` | datetime | Timestamp ultimo aggiornamento | - |
 
@@ -69,12 +70,12 @@
 | Campo | Tipo | Descrizione | Indice |
 |-------|------|-------------|-------|
 | `id` | string | Identificativo univoco del passeggero | PK |
-| `user_id` | string | Riferimento all'utente (NULL per acquisti anonimi) | INDEX |
+| `user_id` | string | Riferimento all'utente (nullable, acquisti anonimi) | INDEX |
 | `first_name` | string | Nome del passeggero (come su documento) | - |
 | `last_name` | string | Cognome del passeggero (come su documento) | - |
-| `email` | string | Email del passeggero per comunicazioni | INDEX |
-| `phone` | string | Numero di telefono per emergenze | - |
-| `document_number` | string | Documento di identità per controlli | - |
+| `email` | string | Email del passeggero per comunicazioni (nullable) | INDEX |
+| `phone` | string | Numero di telefono per emergenze (nullable) | - |
+| `document_number` | string | Documento di identità per controlli (nullable) | - |
 | `created_at` | datetime | Timestamp di creazione | - |
 | `updated_at` | datetime | Timestamp ultimo aggiornamento | - |
 
@@ -138,7 +139,7 @@
 |-------|------|-------------|-------|
 | `id` | string | Identificativo univoco del posto/letto | PK |
 | `wagon_id` | string | Riferimento al vagone di appartenenza | INDEX (con seat_number, seat_type) |
-| `cabin_id` | string | Riferimento alla cabina (NULL se non è in una cabina) | INDEX |
+| `cabin_id` | string | Riferimento alla cabina (nullable, FK) | INDEX |
 | `seat_number` | string | Numero posto user-friendly (es. "1A", "Letto 102") | UNIQUE (con wagon_id) |
 | `seat_type` | seat_type | Tipologia: `WINDOW`, `AISLE`, `COUCHETTE_LOWER` | - |
 | `seat_orientation` | seat_orientation | Orientamento: `FORWARD`, `BACKWARD` | - |
@@ -211,7 +212,7 @@
 | `service_type_id` | string | Riferimento al tipo di servizio (AV, REG) | INDEX (con operator_id) |
 | `operator_id` | string | Riferimento all'operatore ferroviario | INDEX (con service_type_id) |
 | `departure_time` | time | Orario partenza dalla stazione origine | - |
-| `service_name` | string | Nome commerciale (es. "FR 9615") | - |
+| `service_name` | string | Nome commerciale (nullable, es. "FR 9615") | - |
 | `operates_days` | jsonb | Giorni operativi (es. `{"mon": true, "tue": true...}`) | - |
 | `valid_from` | date | Data inizio validità orario | INDEX (con valid_to) |
 | `valid_to` | date | Data fine validità orario | INDEX (con valid_from) |
@@ -313,19 +314,19 @@
 | Campo | Tipo | Descrizione | Indice |
 |-------|------|-------------|-------|
 | `id` | string | Identificativo univoco tariffa | PK |
-| `route_id` | string | Route specifica (NULL per tariffe generiche) | INDEX (con operator_id, wagon_category_id, service_type_id) |
-| `operator_id` | string | Operatore specifico (NULL per tariffe generiche) | INDEX (con origin_country_id, destination_country_id) |
-| `origin_country_id` | string | Paese di origine | FK |
-| `destination_country_id` | string | Paese di destinazione | FK |
-| `wagon_category_id` | string | Categoria servizio | FK |
-| `service_type_id` | string | Tipo di servizio (AV, REG) | INDEX |
+| `route_id` | string | Route specifica (nullable, per tariffe generiche) | INDEX (con operator_id, wagon_category_id, service_type_id) |
+| `operator_id` | string | Operatore specifico (nullable, per tariffe generiche) | INDEX (con origin_country_id, destination_country_id) |
+| `origin_country_id` | string | Paese di origine (nullable) | FK |
+| `destination_country_id` | string | Paese di destinazione (nullable) | FK |
+| `wagon_category_id` | string | Categoria servizio (nullable) | FK |
+| `service_type_id` | string | Tipo di servizio (AV, REG, nullable) | INDEX |
 | `distance_min_km` | integer | Scaglione chilometrico minimo | - |
 | `distance_max_km` | integer | Scaglione chilometrico massimo | - |
 | `base_fare` | decimal | Tariffa base fissa | - |
 | `fare_per_km` | decimal | Tariffa variabile per chilometro | - |
-| `is_cross_border` | bool | `true` se la tariffa è per viaggi internazionali | - |
-| `international_supplement` | decimal | Supplemento per viaggi internazionali | - |
-| `currency` | currency_code | Valuta tariffa | - |
+| `is_cross_border` | bool | `true` se la tariffa è per viaggi internazionali (default: false) | - |
+| `international_supplement` | decimal | Supplemento per viaggi internazionali (nullable) | - |
+| `currency` | currency_code | Valuta tariffa (default: EUR) | - |
 | `valid_from` | datetime | Inizio validità | INDEX (con valid_to) |
 | `valid_to` | datetime | Fine validità | INDEX (con valid_from) |
 | `created_at` | datetime | Timestamp creazione | - |
@@ -361,7 +362,7 @@
 | `origin_station_id` | string | Stazione partenza | - |
 | `destination_station_id` | string | Stazione arrivo | - |
 | `wagon_category_id` | string | Categoria vagone | FK |
-| `seat_reservation_id` | string | Riferimento posto (se prenotato) | FK |
+| `seat_reservation_id` | string | Riferimento posto (nullable, se prenotato) | FK |
 | `fare_amount` | decimal | Tariffa biglietto | - |
 | `currency` | currency_code | Valuta biglietto | - |
 | `status` | ticket_status | `VALID`, `USED`, `CANCELED` | INDEX (con service_date) |
@@ -381,7 +382,7 @@
 | `currency` | currency_code | Valuta transazione | - |
 | `payment_method` | payment_method | Metodo (carta, PayPal, etc.) | - |
 | `status` | payment_status | `PENDING`, `COMPLETED`, `FAILED` | INDEX |
-| `transaction_ref` | string | Riferimento gateway di pagamento esterno | - |
-| `paid_at` | datetime | Timestamp completamento pagamento | - |
+| `transaction_ref` | string | Riferimento gateway di pagamento esterno (nullable) | - |
+| `paid_at` | datetime | Timestamp completamento pagamento (nullable) | - |
 | `created_at` | datetime | Timestamp creazione | - |
 | `updated_at` | datetime | Timestamp ultimo aggiornamento | - |
