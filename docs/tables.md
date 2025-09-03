@@ -1,3 +1,53 @@
+# Documentazione Tabelle
+
+## Note di Progettazione
+
+Durante lo sviluppo dello schema, alcune decisioni si sono rivelate più complesse del previsto. Questo documento raccoglie la logica dietro la struttura delle tabelle e le considerazioni che mi hanno portato alle scelte finali.
+
+### Separazione `users` vs `passengers`
+Inizialmente avevo pensato a una struttura più semplice con una sola tabella utenti. Tuttavia, analizzando i casi d'uso reali (prenotazioni aziendali, genitori che prenotano per figli, acquisti per terzi), ho capito che era necessario separare chi paga da chi viaggia.
+
+### Gestione Multi-Segmento
+La parte più complessa è stata progettare `booking_segments`. L'alternativa era avere una tabella `connections` separata, ma avrebbe reso le query molto più complesse. La soluzione attuale permette di gestire sia viaggi diretti che con cambi usando la stessa logica.
+
+### Indicizzazione Strategica
+Gli indici sono stati pensati per le query più comuni:
+- Ricerca viaggi disponibili: `trips(service_date, status)`
+- Timeline prenotazioni utente: `bookings(user_id, created_at)`
+- Controllo biglietti: `tickets(ticket_number, service_date)`
+
+## Problemi Risolti Durante lo Sviluppo
+
+### Concorrenza sui Posti
+**Problema**: Due utenti che tentano di prenotare lo stesso posto simultaneamente.
+**Soluzione**: Campo `expires_at` in `seat_reservations` che crea una "prenotazione temporanea" durante il processo di checkout. Se il pagamento non viene completato entro il tempo limite, il posto si libera automaticamente.
+
+### Gestione Orari Complessi
+**Problema**: Come gestire orari che cambiano stagionalmente, giorni festivi, scioperi.
+**Soluzione**: Combinazione di `operates_days` (JSONB) per il calendario base e `service_exceptions` per le eccezioni. Più flessibile di una tabella calendar rigida.
+
+### Performance Ricerche
+**Problema**: Le query per cercare viaggi disponibili erano lentissime su dataset grandi.
+**Soluzione**: Indici composti strategici, in particolare `trips(service_date, status, planned_departure_time)` che copre il 90% delle ricerche comuni.
+
+### Tariffe Multi-Paese
+**Problema**: Operatori diversi con regole tariffarie completamente diverse.
+**Soluzione**: Sistema di priorità in `fares` che parte dalle regole più specifiche (route + operatore + categoria) fino alle più generiche (solo distanza).
+
+## Alternative Considerate
+
+### Gestione Posti
+**Alternativa scartata**: Tabella separata `seat_availability` con uno snapshot per ogni combinazione trip/posto.
+**Perché scartata**: Troppo pesante in termini di storage. Con 1000 posti per treno e 100 viaggi al giorno = 100k record solo per un giorno.
+
+### Struttura Prenotazioni
+**Alternativa scartata**: Tabella unica `bookings` con campo JSON per i segmenti.
+**Perché scartata**: Le query per cercare prenotazioni per trip specifici diventavano complesse e lente.
+
+### Gestione Prezzi
+**Alternativa scartata**: Prezzi fissi per ogni combinazione origine-destinazione.
+**Perché scartata**: Non scalabile per un sistema internazionale con centinaia di operatori e migliaia di rotte.
+
 ## Tabelle
 
 ### `countries`
@@ -203,6 +253,8 @@
 ### `train_services`
 **Scopo**: Template dei servizi ricorrenti. Collega treno, route e calendario per definire un servizio operativo.
 
+**Nota**: Inizialmente avevo chiamato questa tabella `schedules`, ma poi ho capito che era più appropriato `train_services` perché rappresenta effettivamente un servizio commerciale con nome, orari e validità.
+
 | Campo | Tipo | Descrizione | Indice |
 |-------|------|-------------|-------|
 | `id` | string | Identificativo univoco del servizio | PK |
@@ -214,6 +266,8 @@
 | `service_name` | string | Nome commerciale (es. "FR 9615") | - |
 | `operates_days` | jsonb | Giorni operativi (es. `{"mon": true, "tue": true...}`) | - |
 | `valid_from` | date | Data inizio validità orario | INDEX (con valid_to) |
+
+**Nota su operates_days**: Ho scelto JSONB invece di una tabella separata per i giorni operativi perché la maggior parte dei servizi ha pattern semplici (es. "dal lunedì al venerdì"). Per casi complessi si può sempre usare `service_exceptions`.
 | `valid_to` | date | Data fine validità orario | INDEX (con valid_from) |
 | `cabins_enabled` | bool | `true` se il servizio offre cabine/cuccette | - |
 | `created_at` | datetime | Timestamp di creazione | - |
@@ -286,6 +340,8 @@
 
 ### `booking_segments`
 **Scopo**: Cuore del sistema. Ogni `segment` rappresenta una tratta su un singolo treno. Un viaggio con cambi avrà più segmenti.
+
+**Nota di implementazione**: Questa è stata la tabella più difficile da progettare. Ho dovuto bilanciare flessibilità e performance, gestendo sia viaggi semplici che complessi con la stessa struttura. L'uso di `sequence` permette di ricostruire l'ordine dei segmenti, mentre i riferimenti alle `route_stations` permettono di calcolare con precisione gli orari.
 
 | Campo | Tipo | Descrizione | Indice |
 |-------|------|-------------|-------|
