@@ -5,6 +5,10 @@
  -- fino a raggiungere la destinazione finale.
  -- La query in teoria permette un numero illimitato di cambi, ma per motivi
  -- di performance e praticità, si limita a un massimo di 3 segmenti (2 cambio). 
+ -- I parametri di input sono:
+ -- - origin_station_id: ID della stazione di partenza
+ -- - destination_station_id: ID della stazione di arrivo
+ -- - service_date: Data del viaggio
 -- ========================================
 
 WITH RECURSIVE trip_paths AS (

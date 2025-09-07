@@ -3,6 +3,10 @@
 -- Il join su route_stations permette di selezionare sia viaggi completi che tratte intermedie:
 -- ad esempio puoi cercare Milano→Napoli (viaggio lungo) oppure Firenze→Roma (tratta intermedia).
 -- La condizione sulla sequenza garantisce che la direzione sia corretta (partenza prima di arrivo).
+-- I parametri di input sono:
+-- - origin_station_id: ID della stazione di partenza
+-- - destination_station_id: ID della stazione di arrivo
+-- - service_date: Data del viaggio
 -- ========================================
 
 SELECT
