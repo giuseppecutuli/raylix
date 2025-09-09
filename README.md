@@ -8,6 +8,18 @@ Il progetto nasce dall'esigenza di progettare un modello di persistenza dati rob
 
 Durante l'analisi del dominio, è emersa la necessità di supportare scenari complessi come viaggi intermodali (treno + traghetto), gestione di cabine per viaggi notturni, e coordinamento tra operatori di paesi diversi.
 
+## Stack Tecnologico
+
+### Database
+- **PostgreSQL 17** - DBMS principale con supporto JSONB e indicizzazione avanzata
+- **DBML** - Modellazione del database per documentazione e generazione schema
+- **Adminer** - Interfaccia web per esplorazione e gestione dati
+
+### Sviluppo e Testing
+- **Docker Compose** - Ambiente di sviluppo containerizzato
+- **Python 3.11+** - Generazione dati di test realistici
+- **Faker** - Libreria per generazione dati campione
+
 ## Scelte Progettuali
 
 ### PostgreSQL come DBMS
@@ -30,6 +42,43 @@ Implementata una struttura flessibile che supporta:
 - Cabine per viaggi notturni (cuccette, vagoni letto)
 - Prenotazioni temporanee con scadenza automatica
 - Gestione accessibilità
+
+## Analisi del Database
+
+## Tabelle
+Per una descrizione dettagliata delle tabelle e dei loro attributi, consulta il file [`docs/TABLES.md`](docs/TABLES.md).
+
+### Forme Normali
+Il database è stato progettato seguendo rigorosamente le prime tre forme normali (1NF, 2NF, 3NF) con alcune denormalizzazioni strategiche per ottimizzare le performance. L'analisi completa documenta:
+- **Rispetto delle regole di normalizzazione** per garantire integrità dei dati
+- **Eliminazione delle dipendenze transitive** per evitare anomalie
+- **Scelte di denormalizzazione consapevoli** per query critiche (prezzi, orari)
+
+Per i dettagli tecnici: [`docs/NORMALIZATION.md`](docs/NORMALIZATION.md)
+
+### Statistiche del Database
+Il sistema di seed genera automaticamente:
+- **24 tabelle** interconnesse con vincoli di integrità referenziale
+- **Operatori ferroviari** realistici (Trenitalia, SNCF, DB, Renfe, ecc.)
+- **Rete di stazioni** europea con coordinate geografiche precise
+- **Servizi giornalieri** con orari e frequenze realistiche
+- **Prenotazioni campione** per testare scenari complessi
+- **Configurazioni treni** diversificate (alta velocità, regionali, notturni)
+
+## Performance e Scalabilità
+
+### Ottimizzazioni Implementate
+- **Indici strategici** su campi frequentemente usati in JOIN e WHERE
+- **Denormalizzazione selettiva** per query time-critical (calcolo prezzi, orari viaggio)
+- **Enum PostgreSQL** per garantire integrità e performance sui stati
+- **Vincoli di integrità** per prevenire stati inconsistenti del sistema
+
+### Considerazioni di Scalabilità
+Il design supporta:
+- **Milioni di prenotazioni** attraverso indicizzazione ottimizzata
+- **Query geografiche** veloci con indici su coordinate stazioni
+- **Gestione concorrenza** per prenotazioni simultanee sullo stesso posto
+- **Crescita temporale** dei dati storici senza degradazione performance
 
 ## Limitazioni del Progetto
 
@@ -64,9 +113,27 @@ raylix/
 │   └── queries/                 # Query di esempio per casi d'uso comuni
 ├── docs/
 │   ├── tables.md               # Documentazione dettagliata tabelle
+│   ├── normalization.md        # Analisi delle forme normali
 │   └── er-diagram.png          # Diagramma entità-relazione
 └── README.md
 ```
+
+### Query di Esempio
+Il progetto include query SQL per testare i casi d'uso principali:
+- **`find_direct_trips.sql`** - Ricerca viaggi diretti tra due stazioni
+- **`find_trip_paths.sql`** - Trova percorsi con cambi ottimali  
+- **`calculate_fare.sql`** - Calcolo tariffe per segmenti di viaggio
+- **`booking_history.sql`** - Storico prenotazioni per utente
+- **`validate_ticket.sql`** - Validazione e controllo biglietti
+- **`find_available_wagon_seats.sql`** - Verifica disponibilità posti
+
+### Diagramma Entità-Relazione
+![ER Diagram](docs/er-diagram.png)
+
+Il diagramma mostra le 24 tabelle principali e le loro relazioni:
+- **Entità core**: Users, Passengers, Bookings, Trips
+- **Configurazione**: Trains, Wagons, Routes, Stations  
+- **Operazioni**: Payments, Tickets, Seat Reservations
 
 ## Generazione Dati di Test
 
@@ -123,129 +190,9 @@ Una volta completato il setup, puoi:
 - **Connetterti via psql**: `psql -h localhost -d raylix -U postgres`
 - **Eseguire le query di esempio** dalla cartella `database/queries/`
 
----
+## Licenza e Autore
 
-# Raylix 🚄 (English Version)
+Questo progetto è distribuito sotto licenza MIT. Vedi il file [LICENSE](LICENSE) per i dettagli.
 
-Railway booking data management system developed as a thesis project for the **Digital Business Informatics (L-31)** degree.
-
-## Objective
-
-The project stems from the need to design a robust data persistence model for the railway transport sector. The goal is to manage the complexity of real booking systems: journeys with transfers, variable schedules, international operators, and different seat types.
-
-During domain analysis, the need emerged to support complex scenarios such as intermodal journeys (train + ferry), overnight cabin management, and coordination between operators from different countries.
-
-## Design Choices
-
-### PostgreSQL as DBMS
-The choice of PostgreSQL is motivated by:
-- **Transactional integrity**: Essential to avoid overbooking
-- **JSONB support**: Used for flexible management of operating schedules
-- **Advanced indexing**: Necessary for complex journey search queries
-- **Reliability**: Established standard for critical applications
-
-### Multi-Segment Architecture
-The system manages complex journeys through the `booking_segments` table, enabling:
-- Direct journeys and journeys with transfers
-- Routes managed by different operators
-- Precise calculation of connection times
-- Support for mixed transport modes (train + ferry)
-
-### Seat and Cabin Management
-Implemented a flexible structure that supports:
-- Standard seats with preferences (window/aisle)
-- Cabins for overnight journeys (couchettes, sleeper cars)
-- Temporary reservations with automatic expiration
-- Accessibility management
-
-## Project Limitations
-
-This project focuses exclusively on data model design. It does not include:
-- User interface
-- Service APIs
-- Application logic
-- Real payment system
-
-## Possible Future Developments
-
-If I were to continue the project, the next things to add would be:
-
-* **REST or GraphQL APIs**: To enable apps and websites to communicate with the database
-* **Dynamic Pricing System**: Extend fares to change based on demand or time remaining before departure
-* **Availability Cache**: A system to quickly calculate how many seats are available without querying the entire database every time
-* **External Integrations**: Connection with real payment systems and possibly other operators to offer more travel options
-* **Artificial Intelligence**: Use all collected data to:
-  * Predict how many people will want to travel on certain routes
-  * Suggest personalized journeys based on user preferences
-  * Create an intelligent chatbot for customer assistance
-
-## Repository Structure
-
-```
-raylix/
-├── database/
-│   ├── schema/
-│   │   ├── schema.dbml          # Main data model
-│   │   └── database.sql         # PostgreSQL DDL script
-│   ├── seeds/                   # Test data generation
-│   └── queries/                 # Example queries for common use cases
-├── docs/
-│   ├── tables.md               # Detailed table documentation
-│   └── er-diagram.png          # Entity-relationship diagram
-└── README.md
-```
-
-## Test Data Generation
-
-The project includes a complete system for generating realistic data that allows testing the schema with real-world use scenarios.
-
-### Requirements
-- **Docker & Docker Compose** (recommended approach)
-- **Or**: Local PostgreSQL + Python 3.11+
-
-### Docker Setup (Recommended)
-
-```bash
-# Navigate to seeds folder
-cd database/seeds
-
-# Start the complete environment
-./run.sh
-```
-
-This command:
-- Creates a PostgreSQL 17 database on port 5432
-- Automatically applies the database schema
-- Generates realistic test data (operators, stations, trains, bookings)
-- Starts Adminer on http://localhost:8080 to explore the data
-
-### Manual Setup
-
-```bash
-# 1. Create database
-createdb raylix
-
-# 2. Apply schema
-psql -d raylix -f database/schema/database.sql
-
-# 3. Install Python dependencies
-cd database/seeds
-pip install -r requirements.txt
-
-# 4. Create .env file with environment variables
-echo "DB_NAME=raylix
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_HOST=localhost
-DB_PORT=5432" > .env
-
-# 5. Generate test data
-python generate_seed_data.py
-```
-
-### Data Exploration
-
-Once setup is complete, you can:
-- **Access Adminer**: http://localhost:8080 (user: postgres, password: postgres)
-- **Connect via psql**: `psql -h localhost -d raylix -U postgres`
-- **Execute example queries** from the `database/queries/` folder
+**Giuseppe Cutuli** - Progetto di tesi per Informatica per le Aziende Digitali (L-31)  
+GitHub: [@giuseppecutuli](https://github.com/giuseppecutuli)
