@@ -1,4 +1,4 @@
-# Analisi delle Forme Normali nel Database Raylix
+# Analisi delle Forme Normali
 
 Il database Raylix applica le regole di normalizzazione per garantire consistenza dei dati e ridurre la ridondanza. Questo documento analizza come il database rispetta le prime tre forme normali e spiega dove ho scelto di denormalizzare per migliorare le performance.
 
