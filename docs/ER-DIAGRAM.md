@@ -306,7 +306,6 @@ erDiagram
         datetime updated_at
     }
 
-    // --- Relationships ---
     countries ||--|{ railway_operators : "has"
     countries ||--|{ cities : "has"
     countries }o--o{ fares : "origin"
