@@ -360,6 +360,7 @@ Gli indici sono stati pensati per le query più comuni:
 | `platform_arrival` | string | Binario arrivo | - |
 | `distance_km` | decimal | Distanza specifica segment | - |
 | `segment_amount` | decimal | Costo segment (somma = total_amount) | - |
+| `fare_id` | string | Riferimento alla regola tariffaria applicata | FK |
 | `created_at` | datetime | Timestamp creazione | - |
 | `updated_at` | datetime | Timestamp ultimo aggiornamento | - |
 

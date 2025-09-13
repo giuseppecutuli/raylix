@@ -277,6 +277,31 @@ CREATE INDEX idx_trip_station_updates_delay_updated ON trip_station_updates(dela
 -- BOOKINGS, SEGMENTS & FARES
 -- =========================
 
+CREATE TABLE fares (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  route_id UUID REFERENCES routes(id),
+  operator_id UUID REFERENCES railway_operators(id),
+  origin_country_id UUID REFERENCES countries(id),
+  destination_country_id UUID REFERENCES countries(id),
+  wagon_category_id UUID REFERENCES wagon_categories(id),
+  service_type_id UUID REFERENCES service_types(id),
+  distance_min_km INTEGER NOT NULL,
+  distance_max_km INTEGER NOT NULL,
+  base_fare NUMERIC NOT NULL,
+  fare_per_km NUMERIC NOT NULL,
+  is_cross_border BOOLEAN DEFAULT FALSE NOT NULL,
+  international_supplement NUMERIC,
+  currency currency_code DEFAULT 'EUR' NOT NULL,
+  valid_from TIMESTAMPTZ NOT NULL,
+  valid_to TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL
+);
+CREATE INDEX idx_fares_route_operator_category_service ON fares(route_id, operator_id, wagon_category_id, service_type_id);
+CREATE INDEX idx_fares_operator_origin_dest ON fares(operator_id, origin_country_id, destination_country_id);
+CREATE INDEX idx_fares_valid ON fares(valid_from, valid_to);
+CREATE INDEX idx_fares_service_type ON fares(service_type_id);
+
 CREATE TABLE bookings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   booking_reference VARCHAR(20) UNIQUE NOT NULL,
@@ -315,6 +340,7 @@ CREATE TABLE booking_segments (
   platform_arrival TEXT,
   distance_km NUMERIC NOT NULL,
   segment_amount NUMERIC NOT NULL,
+  fare_id UUID REFERENCES fares(id),
   created_at TIMESTAMPTZ NOT NULL,
   updated_at TIMESTAMPTZ NOT NULL,
   UNIQUE(booking_id, sequence)
@@ -322,31 +348,7 @@ CREATE TABLE booking_segments (
 CREATE INDEX idx_booking_segments_trip_id ON booking_segments(trip_id);
 CREATE INDEX idx_booking_segments_booking_id ON booking_segments(booking_id);
 CREATE INDEX idx_booking_segments_departure_time ON booking_segments(planned_departure_time);
-
-CREATE TABLE fares (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  route_id UUID REFERENCES routes(id),
-  operator_id UUID REFERENCES railway_operators(id),
-  origin_country_id UUID REFERENCES countries(id),
-  destination_country_id UUID REFERENCES countries(id),
-  wagon_category_id UUID REFERENCES wagon_categories(id),
-  service_type_id UUID REFERENCES service_types(id),
-  distance_min_km INTEGER NOT NULL,
-  distance_max_km INTEGER NOT NULL,
-  base_fare NUMERIC NOT NULL,
-  fare_per_km NUMERIC NOT NULL,
-  is_cross_border BOOLEAN DEFAULT FALSE NOT NULL,
-  international_supplement NUMERIC,
-  currency currency_code DEFAULT 'EUR' NOT NULL,
-  valid_from TIMESTAMPTZ NOT NULL,
-  valid_to TIMESTAMPTZ NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL,
-  updated_at TIMESTAMPTZ NOT NULL
-);
-CREATE INDEX idx_fares_route_operator_category_service ON fares(route_id, operator_id, wagon_category_id, service_type_id);
-CREATE INDEX idx_fares_operator_origin_dest ON fares(operator_id, origin_country_id, destination_country_id);
-CREATE INDEX idx_fares_valid ON fares(valid_from, valid_to);
-CREATE INDEX idx_fares_service_type ON fares(service_type_id);
+CREATE INDEX idx_booking_segments_fare_id ON booking_segments(fare_id);
 
 -- =========================
 -- RESERVATIONS, TICKETS, PAYMENTS

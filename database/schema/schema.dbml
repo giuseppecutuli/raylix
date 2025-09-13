@@ -397,6 +397,7 @@ table booking_segments {
   platform_arrival string [null]
   distance_km decimal
   segment_amount decimal
+  fare_id string [ref: > fares.id]
   created_at datetime
   updated_at datetime
 
@@ -405,6 +406,7 @@ table booking_segments {
     (trip_id)
     (booking_id)
     (planned_departure_time)
+    (fare_id)
   }
 }
 

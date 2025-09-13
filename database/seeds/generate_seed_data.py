@@ -106,7 +106,7 @@ class FareCalculator:
         """Calcola tariffa con sistema di priorità"""
         
         query = """
-            SELECT f.base_fare, f.fare_per_km, f.international_supplement,
+            SELECT f.id, f.base_fare, f.fare_per_km, f.international_supplement,
                    (CASE 
                        WHEN f.origin_country_id = %s AND f.destination_country_id = %s 
                             AND f.service_type_id = %s AND f.wagon_category_id = %s THEN 100
@@ -149,13 +149,13 @@ class FareCalculator:
         result = self.cursor.fetchone()
         
         if result:
-            base_fare, fare_per_km, supplement = result[:3]
+            fare_id, base_fare, fare_per_km, supplement = result[:4]
             supplement = supplement or 0
             total = float(base_fare) + (float(fare_per_km) * distance_km) + float(supplement)
-            return Decimal(str(round(total, 2)))
+            return [fare_id, Decimal(str(round(total, 2)))]
         else:
             # Fallback
-            return Decimal(str(round(15.00 + (0.15 * distance_km), 2)))
+            return [None, Decimal(str(round(15.00 + (0.15 * distance_km), 2)))]
 
 class StaticDataInserter:
     """Inserimento dati statici nel database"""
@@ -620,7 +620,7 @@ class BookingGenerator:
         distance = random.randint(50, 800)
         
         # Calcola tariffa
-        fare = self.fare_calculator.calculate(
+        (fare_id, fare) = self.fare_calculator.calculate(
             origin_country, dest_country, distance, service_type_id, wagon_category_id
         )
         
@@ -640,11 +640,11 @@ class BookingGenerator:
         ))
         
         # Crea segmento
-        self._create_booking_segment(booking_id, trip_data, distance, fare)
+        self._create_booking_segment(booking_id, trip_data, distance, fare, fare_id)
         
         return booking_id
     
-    def _create_booking_segment(self, booking_id, trip_data, distance, fare):
+    def _create_booking_segment(self, booking_id, trip_data, distance, fare, fare_id):
         """Crea segmento prenotazione"""
         trip_id, origin_station, dest_station = trip_data[0], trip_data[1], trip_data[2]
         dep_time, arr_time = trip_data[3], trip_data[4]
@@ -674,12 +674,12 @@ class BookingGenerator:
                                         origin_station_id, destination_station_id,
                                         origin_route_station_id, destination_route_station_id,
                                         planned_departure_time, planned_arrival_time,
-                                        distance_km, segment_amount, created_at, updated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                                        distance_km, segment_amount, fare_id, created_at, updated_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (
             UniqueValueGenerator.uuid(), booking_id, trip_id, 1,
             origin_station, dest_station, origin_rs[0], dest_rs[0],
-            dep_time, arr_time, distance, fare, datetime.now(), datetime.now()
+            dep_time, arr_time, distance, fare, fare_id, datetime.now(), datetime.now()
         ))
     
     def _create_tickets(self, booking_ids):
@@ -819,14 +819,33 @@ class DatabaseCleaner:
         """Cancella tutti i dati"""
         print("🗑️ Clearing existing data...")
         
+        # Ordine di cancellazione per rispettare vincoli FK
         tables = [
-            'payments', 'tickets', 'seat_reservations', 'fares', 
-            'booking_segments', 'bookings', 'passengers', 'users', 
-            'trip_station_updates', 'trips', 'service_exceptions',
-            'train_services', 'route_stations', 'routes', 'wagon_seats',
-            'cabins', 'train_wagons', 'wagons', 'wagon_categories', 
-            'trains', 'service_types', 'railway_operators',
-            'stations', 'cities', 'countries'
+            'payments', 
+            'tickets', 
+            'seat_reservations',
+            'trip_station_updates',
+            'booking_segments',
+            'wagon_seats',
+            'cabins',
+            'bookings', 
+            'passengers', 
+            'trips', 
+            'service_exceptions',
+            'train_wagons',
+            'users',
+            'train_services', 
+            'route_stations', 
+            'wagons',
+            'fares', 
+            'routes', 
+            'trains', 
+            'railway_operators',
+            'stations', 
+            'wagon_categories', 
+            'service_types', 
+            'cities', 
+            'countries'
         ]
         
         for table in tables:
