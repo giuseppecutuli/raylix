@@ -235,6 +235,7 @@ erDiagram
         string platform_arrival "nullable"
         decimal distance_km
         decimal segment_amount
+        string fare_id FK
         datetime created_at
         datetime updated_at
     }
@@ -353,6 +354,7 @@ erDiagram
     passengers ||--o{ tickets : "is issued to"
     trips ||--o{ tickets : "is for"
     booking_segments |o--|| seat_reservations : "can have"
+    booking_segments |o--|| fares : "fare applied"
     wagon_seats }o--o{ seat_reservations : "is reserved"
     passengers ||--o{ seat_reservations : "is for"
     trips ||--o{ seat_reservations : "is for"
