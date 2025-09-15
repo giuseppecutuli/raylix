@@ -97,6 +97,7 @@ Gli indici sono stati pensati per le query più comuni:
 | `city_id` | string | Riferimento alla città di appartenenza | INDEX |
 | `latitude` | double | Posizione GPS specifica della stazione | INDEX (con longitude) |
 | `longitude` | double | Posizione GPS specifica della stazione | INDEX (con latitude) |
+| `platforms` | jsonb | Piattaforme disponibili (es. ["1", "2", "3"]) | - |
 | `created_at` | datetime | Timestamp di creazione record | - |
 | `updated_at` | datetime | Timestamp ultimo aggiornamento | - |
 
